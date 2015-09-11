@@ -7,6 +7,7 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s\t(%(t
 MODELDIR = Context.getPocketsphinx('model.dir')
 HMM = Context.getPocketsphinx('hmm')
 THRESHOLD = int(Context.getAudio('threshold'))
+SEC2LISTEN = Context.getAudio('sec2listen')
 
 # Create and configure decoder
 config = Decoder.default_config()
@@ -58,12 +59,12 @@ def decodeOnline(data):
 
 while True:
     logging.info('Listening...')
-    data = listen(Context.getAudio('sec2listen'))
+    data = listen(SEC2LISTEN)
     rms = audioop.rms(data, 2)
     logging.debug('RMS: %d threshold: %d' % (rms, THRESHOLD))
     if rms > THRESHOLD:
-        onlineRes = decodeOnline(data)
-        logging.info('You said(online): %s' % onlineRes)
+        # onlineRes = decodeOnline(data)
+        # logging.info('You said(online): %s' % onlineRes)
         offlineRes = decodeOffline(decoder, data)
         if offlineRes is not None and offlineRes:
             logging.info('You said(offline): %s' % offlineRes)
