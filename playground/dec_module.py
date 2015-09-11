@@ -53,6 +53,7 @@ def decodeOnline(data, file=Context.getGoogle('flac.tmp.file')):
     # c.setopt(pycurl.POSTFIELDSIZE, file_size)
     # fin = open(file, 'rb')
     # c.setopt(pycurl.READFUNCTION, fin.read)
+    c.setopt(pycurl.POSTFIELDSIZE, len(data))
     c.setopt(pycurl.READFUNCTION, StringIO.StringIO(data).read)
     c.perform()
 
