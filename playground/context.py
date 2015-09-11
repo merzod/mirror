@@ -3,7 +3,6 @@ import ConfigParser
 class Context(object):
     instance = None
     def __init__(self):
-        Context.instance = self
         self.config = ConfigParser.RawConfigParser()
         self.config.read('mirror.cfg')
 

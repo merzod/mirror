@@ -7,7 +7,6 @@ class Voice(object):
     instance = None
 
     def __init__(self):
-        Voice.instance = self
         self.v = pyvona.create_voice(Context.getPyvona('accessKey'), Context.getPyvona('secretKey'))
         self.v.voice_name = Context.getPyvona('name')
         self.v.speech_rate = Context.getPyvona('rate')
