@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s\t(%(t
 MODELDIR = "/usr/local/share/pocketsphinx/model"
 DATADIR = "/home/pi"
 SEC = 4
-THRESHOLD = 100
+THRESHOLD = 600
 
 # function run 'arecord' console cmd for 'sec' seconds and gives back it's stdout
 def listen(sec):
@@ -33,8 +33,8 @@ def process(decoder, data):
 # Create a decoder with certain model
 config = Decoder.default_config()
 config.set_string('-hmm', path.join(MODELDIR, 'en-us/en-us'))
-config.set_string('-lm', path.join(MODELDIR, 'en-us/en-us/4986.lm'))
-config.set_string('-dict', path.join(MODELDIR, 'en-us/en-us/4986.dic'))
+config.set_string('-lm', path.join(MODELDIR, 'en-us/en-us/1722.lm'))
+config.set_string('-dict', path.join(MODELDIR, 'en-us/en-us/1722.dic'))
 config.set_string('-samprate', '48000')
 config.set_string('-logfn', '/dev/null')
 decoder = Decoder(config)
