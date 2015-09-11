@@ -25,8 +25,6 @@ core.append(tp)
 
 # build pasive processor
 mp = MasterProcessor(core)
-mp2 = MasterPasiveProcessor(core)
-mp.append(mp2)
 
 core.appendPasive(mp)
 core.append(mp)

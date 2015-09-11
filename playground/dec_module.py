@@ -23,17 +23,6 @@ def listen(sec):
     proc = subprocess.Popen(reccmd, stdout=subprocess.PIPE)
     return proc.stdout.read()
 
-def chainListen():
-    frames = ''
-    for _ in range(1, 4):
-        data = listen(1)
-        frames += data
-        rms = audioop.rms(data, 2)
-        if rms < THRESHOLD:
-            break
-    return frames
-
-
 # function decode data using decoder, and return decoded string or None
 def decodeOffline(decoder, data):
     decoder.start_utt()
@@ -70,8 +59,7 @@ def decodeOnline(data):
 
 while True:
     logging.info('Listening...')
-    #data = listen(SEC2LISTEN)
-    data = chainListen()
+    data = listen(SEC2LISTEN)
     rms = audioop.rms(data, 2)
     logging.debug('RMS: %d threshold: %d' % (rms, THRESHOLD))
     if rms > THRESHOLD:
