@@ -68,20 +68,23 @@ class Core():
     def __init__(self):
         self.active = False
         self.activeProcessors = ChainProcessor()
-        self.pasiveProcessors = ChainProcessor()
+        self.passiveProcessors = ChainProcessor()
 
     def processCommand(self, cmd):
         logging.info('Core active: \'%s\', processing: %s' % (self.active, cmd))
 
         # process command with either active or passive processors.
-        # In case of passive processing succeed - process with active also
         if self.active:
             res = self.activeProcessors.processCommand(cmd)
             self.active = False
         else:
-            res = self.pasiveProcessors.processCommand(cmd)
+            res = self.passiveProcessors.processCommand(cmd)
             if res > 0:
-                self.activeProcessors.processCommand(cmd)
+                # In case of passive processing succeed - process with active also
+                res2 = self.activeProcessors.processCommand(cmd)
+                if res2 > 0:
+                    # If active processing succeed - suspend Walle
+                    self.active = False
 
         if res == 0:
             logging.warn('Failed to find any suitable processor for: %s' % cmd)
@@ -91,4 +94,4 @@ class Core():
         self.activeProcessors.processors.append(processor)
 
     def appendPasive(self, processor):
-        self.pasiveProcessors.processors.append(processor)
+        self.passiveProcessors.processors.append(processor)
