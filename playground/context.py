@@ -10,7 +10,6 @@ class Context(object):
     @staticmethod
     def getInstance():
         if Context.instance is None:
-            print 'create'
             Context.instance = Context()
         return Context.instance
 
@@ -21,3 +20,4 @@ class Context(object):
     @staticmethod
     def getPocketsphinx(key):
         return Context.get('pocketsphinx', key)
+

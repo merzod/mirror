@@ -33,7 +33,7 @@ def decodeOffline(decoder, data):
 
 while True:
     logging.info('Listening...')
-    data = listen(int(Context.getPocketsphinx('sec2listen')))
+    data = listen(Context.getPocketsphinx('sec2listen'))
     rms = audioop.rms(data, 2)
     logging.debug('RMS: %d' % rms)
     if rms > int(Context.getPocketsphinx('threshold')):
