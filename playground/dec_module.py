@@ -22,12 +22,6 @@ def listen(sec):
     proc = subprocess.Popen(reccmd, stdout=subprocess.PIPE)
     return proc.stdout.read()
 
-# function encode incoming data using 'flac' console cmd and store it into the temp file
-def flac(data, file):
-    flaccmd = ["flac", "-", "-s", "-f", "--best", "--sample-rate", Context.getAudio('rate'), "-o", file]
-    proc = subprocess.Popen(flaccmd, stdin=subprocess.PIPE)
-    proc.communicate(data)
-
 # function decode data using decoder, and return decoded string or None
 def decodeOffline(decoder, data):
     decoder.start_utt()
@@ -37,27 +31,23 @@ def decodeOffline(decoder, data):
         return decoder.hyp().hypstr
     return None
 
-def decodeOnline(data, file=Context.getGoogle('flac.tmp.file')):
-    #flac(data, file)
+# decode wav input data using google recognize API, returns recognized string
+def decodeOnline(data):
     stt_url = 'https://www.google.com/speech-api/v2/recognize?output=json&lang=%s&key=%s' % (Context.getGoogle('locale'), Context.getGoogle('app.key'))
+    fout = StringIO.StringIO()
+
     c = pycurl.Curl()
     c.setopt(pycurl.VERBOSE, 0)
     c.setopt(pycurl.URL, stt_url)
-    fout = StringIO.StringIO()
     c.setopt(pycurl.WRITEFUNCTION, fout.write)
-
     c.setopt(pycurl.POST, 1)
     c.setopt(pycurl.HTTPHEADER, ['Content-Type: audio/l16; rate=%s' % Context.getAudio('rate')])
-
-    # file_size = os.path.getsize(file)
-    # c.setopt(pycurl.POSTFIELDSIZE, file_size)
-    # fin = open(file, 'rb')
-    # c.setopt(pycurl.READFUNCTION, fin.read)
     c.setopt(pycurl.POSTFIELDSIZE, len(data))
     c.setopt(pycurl.READFUNCTION, StringIO.StringIO(data).read)
     c.perform()
 
     response_data = fout.getvalue()
+    logging.debug(response_data)
 
     start_loc = response_data.find("transcript")
     temp_str = response_data[start_loc + 13:]
@@ -72,11 +62,11 @@ while True:
     rms = audioop.rms(data, 2)
     logging.debug('RMS: %d threshold: %d' % (rms, THRESHOLD))
     if rms > THRESHOLD:
-        o = decodeOnline(data)
-        logging.info('You said(online): %s' % o)
-        str = decodeOffline(decoder, data)
-        if str is not None and str:
-            logging.info('You said: %s' % str)
+        onlineRes = decodeOnline(data)
+        logging.info('You said(online): %s' % onlineRes)
+        offlineRes = decodeOffline(decoder, data)
+        if offlineRes is not None and offlineRes:
+            logging.info('You said(offline): %s' % offlineRes)
         else:
             logging.debug('Noise...')
     time.sleep(2)
