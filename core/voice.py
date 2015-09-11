@@ -7,7 +7,7 @@ class Voice(object):
 	def __init__(self):
 		Voice.instance = self
 		config = ConfigParser.RawConfigParser()
-		config.read('pyvona.cfg')
+		config.read('mirror.cfg')
 		self.v = pyvona.create_voice(config.get('pyvona', 'accessKey'), config.get('pyvona', 'secretKey'))
 		self.v.voice_name = config.get('pyvona', 'name')
 		self.v.speech_rate = config.get('pyvona', 'rate')
