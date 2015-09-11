@@ -21,3 +21,6 @@ class Context(object):
     def getPocketsphinx(key):
         return Context.get('pocketsphinx', key)
 
+    @staticmethod
+    def getGoogle(key):
+        return Context.get('google', key)

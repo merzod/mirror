@@ -1,4 +1,4 @@
-import scikits.audiolab, numpy, subprocess, sys, logging, audioop
+import scikits.audiolab, numpy, subprocess, sys, logging, audioop, time
 from context import Context
 from pocketsphinx import *
 from os import path
@@ -7,6 +7,7 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s\t(%(t
 
 MODELDIR = Context.getPocketsphinx('model.dir')
 HMM = Context.getPocketsphinx('hmm')
+THRESHOLD = int(Context.getPocketsphinx('threshold'))
 
 # Create a decoder with certain model
 config = Decoder.default_config()
@@ -22,6 +23,11 @@ def listen(sec):
     proc = subprocess.Popen(reccmd, stdout=subprocess.PIPE)
     return proc.stdout.read()
 
+def flac(data):
+    flaccmd = ["flac", "-", "-s", "-f", "--best", "--sample-rate", Context.getPocketsphinx('rate'), "-o", "test.flac"]
+    proc = subprocess.Popen(flaccmd, stdin=subprocess.PIPE)
+    proc.communicate(data)
+
 # function decode data using decoder, and return decoded string or None
 def decodeOffline(decoder, data):
     decoder.start_utt()
@@ -31,14 +37,22 @@ def decodeOffline(decoder, data):
         return decoder.hyp().hypstr
     return None
 
+def decodeOnline(data):
+    stt_url = 'https://www.google.com/speech-api/v2/recognize?output=json&lang=%s&key=%s' % (Context.getGoogle('locale'), Context.getGoogle('app.key'))
+
 while True:
     logging.info('Listening...')
     data = listen(Context.getPocketsphinx('sec2listen'))
     rms = audioop.rms(data, 2)
-    logging.debug('RMS: %d' % rms)
-    if rms > int(Context.getPocketsphinx('threshold')):
+    logging.debug('RMS: %d threshold: %d' % (rms, THRESHOLD))
+    if rms > THRESHOLD:
+        flac(data)
         str = decodeOffline(decoder, data)
-        logging.info('Match: %s' % str)
+        if str is not None and str:
+            logging.info('You said: %s' % str)
+        else:
+            logging.debug('Noise...')
+    time.sleep(2)
 
 
 #data2file = numpy.frombuffer(data, dtype=numpy.int16)
