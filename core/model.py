@@ -72,12 +72,19 @@ class Core():
 
     def processCommand(self, cmd):
         logging.info('Core active: \'%s\', processing: %s' % (self.active, cmd))
-        processors = self.pasiveProcessors
+
+        # process command with either active or passive processors.
+        # In case of passive processing succeed - process with active also
         if self.active:
-            processors = self.activeProcessors
-            self.active = False
-        if processors.processCommand(cmd) == 0:
+            res = self.activeProcessors.processCommand(cmd)
+        else:
+            res = self.pasiveProcessors.processCommand(cmd)
+            if res > 0:
+                self.activeProcessors.processCommand(cmd)
+
+        if res == 0:
             logging.warn('Failed to find any suitable processor for: %s' % cmd)
+
 
     def append(self, processor):
         self.activeProcessors.processors.append(processor)
