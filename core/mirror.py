@@ -31,7 +31,7 @@ core.append(tp)
 mp = MasterProcessor(core)
 
 core.appendPasive(mp)
-core.append(mp)
+#core.append(mp)
 
 # while True:
 # 	str = raw_input('>')
