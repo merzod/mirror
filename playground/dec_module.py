@@ -23,6 +23,7 @@ config.set_string('-hmm', path.join(MODELDIR, 'en-us/en-us'))
 config.set_string('-lm', path.join(MODELDIR, 'en-us/en-us/4986.lm'))
 config.set_string('-dict', path.join(MODELDIR, 'en-us/en-us/4986.dic'))
 config.set_string('-samprate', '48000')
+config.set_string('-logfn', '/dev/null')
 decoder = Decoder(config)
 
 data = listen(4)
