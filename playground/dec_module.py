@@ -24,12 +24,13 @@ def listen(sec):
     return proc.stdout.read()
 
 def chainListen():
-    rms = THRESHOLD+1
     frames = ''
-    while rms > THRESHOLD:
+    for _ in range(1, 4):
         data = listen(1)
         frames += data
         rms = audioop.rms(data, 2)
+        if rms < THRESHOLD:
+            break
     return frames
 
 
