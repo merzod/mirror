@@ -77,6 +77,7 @@ class Core():
         # In case of passive processing succeed - process with active also
         if self.active:
             res = self.activeProcessors.processCommand(cmd)
+            self.active = False
         else:
             res = self.pasiveProcessors.processCommand(cmd)
             if res > 0:
