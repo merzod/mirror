@@ -23,6 +23,16 @@ def listen(sec):
     proc = subprocess.Popen(reccmd, stdout=subprocess.PIPE)
     return proc.stdout.read()
 
+def chainListen():
+    rms = THRESHOLD+1
+    frames = ''
+    while rms > THRESHOLD:
+        data = listen(1)
+        frames += data
+        rms = audioop.rms(data, 2)
+    return frames
+
+
 # function decode data using decoder, and return decoded string or None
 def decodeOffline(decoder, data):
     decoder.start_utt()
@@ -59,7 +69,8 @@ def decodeOnline(data):
 
 while True:
     logging.info('Listening...')
-    data = listen(SEC2LISTEN)
+    #data = listen(SEC2LISTEN)
+    data = chainListen()
     rms = audioop.rms(data, 2)
     logging.debug('RMS: %d threshold: %d' % (rms, THRESHOLD))
     if rms > THRESHOLD:
@@ -70,7 +81,6 @@ while True:
             logging.info('You said(offline): %s' % offlineRes)
         else:
             logging.debug('Noise...')
-    time.sleep(2)
 
 
 #data2file = numpy.frombuffer(data, dtype=numpy.int16)
