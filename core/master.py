@@ -14,4 +14,4 @@ class MasterProcessor(Processor):
         if not self.core.active:
             logging.info('Activate Walle')
             self.core.active = True
-            Voice.getInstance().say('Привет')
+            Voice.getInstance().say('Слушаю')
