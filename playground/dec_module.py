@@ -23,7 +23,7 @@ def listen(sec):
     return proc.stdout.read()
 
 # function encode incoming data using 'flac' console cmd and store it into the temp file
-def flac(data, file=Context.getGoogle('flac.tmp.file')):
+def flac(data, file):
     flaccmd = ["flac", "-", "-s", "-f", "--best", "--sample-rate", Context.getAudio('rate'), "-o", file]
     proc = subprocess.Popen(flaccmd, stdin=subprocess.PIPE)
     proc.communicate(data)
@@ -37,7 +37,8 @@ def decodeOffline(decoder, data):
         return decoder.hyp().hypstr
     return None
 
-def decodeOnline(file=Context.getGoogle('flac.tmp.file')):
+def decodeOnline(data, file=Context.getGoogle('flac.tmp.file')):
+    #flac(data, file)
     stt_url = 'https://www.google.com/speech-api/v2/recognize?output=json&lang=%s&key=%s' % (Context.getGoogle('locale'), Context.getGoogle('app.key'))
     c = pycurl.Curl()
     c.setopt(pycurl.VERBOSE, 0)
@@ -46,12 +47,13 @@ def decodeOnline(file=Context.getGoogle('flac.tmp.file')):
     c.setopt(pycurl.WRITEFUNCTION, fout.write)
 
     c.setopt(pycurl.POST, 1)
-    c.setopt(pycurl.HTTPHEADER, ['Content-Type: audio/x-flac; rate=%s' % Context.getAudio('rate')])
+    c.setopt(pycurl.HTTPHEADER, ['Content-Type: audio/l16; rate=%s' % Context.getAudio('rate')])
 
-    file_size = os.path.getsize(file)
-    c.setopt(pycurl.POSTFIELDSIZE, file_size)
-    fin = open(file, 'rb')
-    c.setopt(pycurl.READFUNCTION, fin.read)
+    # file_size = os.path.getsize(file)
+    # c.setopt(pycurl.POSTFIELDSIZE, file_size)
+    # fin = open(file, 'rb')
+    # c.setopt(pycurl.READFUNCTION, fin.read)
+    c.setopt(pycurl.READFUNCTION, data)
     c.perform()
 
     response_data = fout.getvalue()
@@ -69,8 +71,7 @@ while True:
     rms = audioop.rms(data, 2)
     logging.debug('RMS: %d threshold: %d' % (rms, THRESHOLD))
     if rms > THRESHOLD:
-        flac(data)
-        o = decodeOnline()
+        o = decodeOnline(data)
         logging.info('You said(online): %s' % o)
         str = decodeOffline(decoder, data)
         if str is not None and str:
