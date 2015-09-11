@@ -3,7 +3,7 @@ import numpy
 import subprocess, os, sys
 
 def listen():
-    reccmd = "ls -la"
+    reccmd = ["ls", "-la"]
     proc = subprocess.Popen(reccmd, stdout=subprocess.PIPE)
     return proc.stdout.read()
 
