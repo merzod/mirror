@@ -1,15 +1,14 @@
-import scikits.audiolab, numpy, subprocess, sys, logging, audioop, time
+import scikits.audiolab, numpy, subprocess, sys, logging, audioop, time, pycurl, StringIO, os
 from context import Context
 from pocketsphinx import *
 from os import path
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
-
 MODELDIR = Context.getPocketsphinx('model.dir')
 HMM = Context.getPocketsphinx('hmm')
-THRESHOLD = int(Context.getPocketsphinx('threshold'))
+THRESHOLD = int(Context.getAudio('threshold'))
 
-# Create a decoder with certain model
+# Create and configure decoder
 config = Decoder.default_config()
 config.set_string('-hmm', path.join(MODELDIR, HMM))
 config.set_string('-lm', path.join(MODELDIR, HMM, '%s.lm' % Context.getPocketsphinx('dict')))
@@ -19,12 +18,13 @@ decoder = Decoder(config)
 
 # function run 'arecord' console cmd for 'sec' seconds and gives back it's stdout
 def listen(sec):
-    reccmd = ["arecord", "-D", "plughw:0,0", "-f", "cd", "-c", "1", "-t", "wav", "-d", "%s"%sec, "-q", "-r", Context.getPocketsphinx('rate')]
+    reccmd = ["arecord", "-D", "plughw:0,0", "-f", "cd", "-c", "1", "-t", "wav", "-d", "%s"%sec, "-q", "-r", Context.getAudio('rate')]
     proc = subprocess.Popen(reccmd, stdout=subprocess.PIPE)
     return proc.stdout.read()
 
-def flac(data):
-    flaccmd = ["flac", "-", "-s", "-f", "--best", "--sample-rate", Context.getPocketsphinx('rate'), "-o", "test.flac"]
+# function encode incoming data using 'flac' console cmd and store it into the temp file
+def flac(data, file=Context.getGoogle('flac.tmp.file')):
+    flaccmd = ["flac", "-", "-s", "-f", "--best", "--sample-rate", Context.getAudio('rate'), "-o", file]
     proc = subprocess.Popen(flaccmd, stdin=subprocess.PIPE)
     proc.communicate(data)
 
@@ -37,16 +37,41 @@ def decodeOffline(decoder, data):
         return decoder.hyp().hypstr
     return None
 
-def decodeOnline(data):
+def decodeOnline(file=Context.getGoogle('flac.tmp.file')):
     stt_url = 'https://www.google.com/speech-api/v2/recognize?output=json&lang=%s&key=%s' % (Context.getGoogle('locale'), Context.getGoogle('app.key'))
+    c = pycurl.Curl()
+    c.setopt(pycurl.VERBOSE, 0)
+    c.setopt(pycurl.URL, stt_url)
+    fout = StringIO.StringIO()
+    c.setopt(pycurl.WRITEFUNCTION, fout.write)
+
+    c.setopt(pycurl.POST, 1)
+    c.setopt(pycurl.HTTPHEADER, ['Content-Type: audio/x-flac; rate=%s' % Context.getAudio('rate')])
+
+    file_size = os.path.getsize(file)
+    c.setopt(pycurl.POSTFIELDSIZE, file_size)
+    fin = open(file, 'rb')
+    c.setopt(pycurl.READFUNCTION, fin.read)
+    c.perform()
+
+    response_data = fout.getvalue()
+
+    start_loc = response_data.find("transcript")
+    temp_str = response_data[start_loc + 13:]
+    end_loc = temp_str.find("\"")
+    final_result = temp_str[:end_loc]
+    c.close()
+    return final_result
 
 while True:
     logging.info('Listening...')
-    data = listen(Context.getPocketsphinx('sec2listen'))
+    data = listen(Context.getAudio('sec2listen'))
     rms = audioop.rms(data, 2)
     logging.debug('RMS: %d threshold: %d' % (rms, THRESHOLD))
     if rms > THRESHOLD:
         flac(data)
+        o = decodeOnline()
+        logging.info('You said(online): %s' % o)
         str = decodeOffline(decoder, data)
         if str is not None and str:
             logging.info('You said: %s' % str)

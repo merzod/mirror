@@ -24,3 +24,7 @@ class Context(object):
     @staticmethod
     def getGoogle(key):
         return Context.get('google', key)
+
+    @staticmethod
+    def getAudio(key):
+        return Context.get('audio', key)
