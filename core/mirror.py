@@ -44,12 +44,15 @@ while True:
     rms = audioop.rms(data, 2)
     logging.debug('RMS: %d threshold: %d' % (rms, THRESHOLD))
     if rms > THRESHOLD:
-        # onlineRes = decodeOnline(data)
-        # logging.info('You said(online): %s' % onlineRes)
-        offlineRes = Analyser.getInstance().decodeOffline(data)
-        if offlineRes is not None and offlineRes:
-            logging.info('You said(offline): %s' % offlineRes)
-            core.processCommand(Command.build(offlineRes, data))
+        result = ''
+        if core.active:
+            result = Analyser.decodeOnline(data)
+            logging.info('You said(online): %s' % result)
+        else:
+            result = Analyser.getInstance().decodeOffline(data)
+            logging.info('You said(offline): %s' % result)
+        if result is not None and result:
+            core.processCommand(Command.build(result, data))
         else:
             logging.debug('Noise...')
 
