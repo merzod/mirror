@@ -1,4 +1,4 @@
-import logging, subprocess, pyvona
+import logging, subprocess, pyvona, threading
 from context import Context
 
 
@@ -19,6 +19,10 @@ class Voice(object):
     # function says 'str' over pyvona
     def say(self, str):
         self.v.speak(str)
+
+    def sayInThread(self, str):
+        t = threading.Thread(target=self.say, args=(self, str))
+        t.start()
 
     # function run 'arecord' console cmd for 'sec' seconds and gives back it's stdout
     def listen(self, sec):
