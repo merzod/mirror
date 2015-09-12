@@ -90,7 +90,7 @@ class TimerProcessor(Processor):
 
 
 class StartTimerProcessor(TimerProcessor):
-    def __init__(self, tags={'секунд', 'минут'}):
+    def __init__(self, tags={'секунд', 'минут', 'час'}):
         super(StartTimerProcessor, self).__init__(tags)
 
     def processCommandByMyself(self, cmd):
@@ -100,12 +100,18 @@ class StartTimerProcessor(TimerProcessor):
         preTag = None
         total = 0;
         for tag in cmd.tags:
+            if tag.lower().startswith('час') and preTag is not None:
+                try:
+                    hour = int(preTag)
+                except ValueError:
+                    hour = 1
+                logging.debug('Hour: %d' % min)
+                total += hour * 3600
             if tag.lower().startswith('минут') and preTag is not None:
                 try:
                     min = int(preTag)
                 except ValueError:
-                    logging.error('Can\'t cast \'%s\' to int' % preTag)
-                    return
+                    min = 1
                 logging.debug('Min: %d' % min)
                 total += min * 60
             elif tag.lower().startswith('секунд') and preTag is not None:
