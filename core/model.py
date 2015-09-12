@@ -95,6 +95,7 @@ class Core():
 
     def processCmdOnline(self, cmd):
         str = Analyser.decodeOnline(cmd.data)
+        logging.info('You said(online): %s' % str)
         cmd.tags = str.split()
         return cmd
 
