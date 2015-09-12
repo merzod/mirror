@@ -90,7 +90,7 @@ class TimerProcessor(Processor):
 
 
 class StartTimerProcessor(TimerProcessor):
-    def __init__(self, tags={'секунд'}):
+    def __init__(self, tags={'секунд', 'минут'}):
         super(StartTimerProcessor, self).__init__(tags)
 
     def processCommandByMyself(self, cmd):
@@ -98,23 +98,34 @@ class StartTimerProcessor(TimerProcessor):
         global started
         global canceled
         preTag = None
+        total = 0;
         for tag in cmd.tags:
-            if tag.lower().startswith('секунд') and preTag is not None:
-                period = None
+            if tag.lower().startwith('минут') and preTag is not None:
                 try:
-                    period = int(preTag)
+                    min = int(preTag)
                 except ValueError:
                     logging.error('Can\'t cast \'%s\' to int' % preTag)
                     return
-                logging.info('Start timer for %d sec', period)
-                t = threading.Timer(period, action, args=[self])
-                started = time.time()
-                canceled = None
-                t.start()
-                Voice.getInstance().say('Таймер на %s запущен' % secToString(period))
-                return
+                logging.debug('Min: %d' % min)
+                total += min * 60
+            elif tag.lower().startswith('секунд') and preTag is not None:
+                try:
+                    sec = int(preTag)
+                except ValueError:
+                    logging.error('Can\'t cast \'%s\' to int' % preTag)
+                    return
+                logging.debug('Sec: %d' % sec)
+                total += sec
             preTag = tag
-        logging.debug('NOTHING')
+        if total > 0:
+            t = threading.Timer(total, action, args=[self])
+            started = time.time()
+            canceled = None
+            t.start()
+            logging.info('Start timer for %s' % secToString(total))
+            Voice.getInstance().say('Таймер на %s запущен' % secToString(total))
+        else:
+            logging.debug('NOTHING')
 
 
 class CancelTimerProcessor(TimerProcessor):
