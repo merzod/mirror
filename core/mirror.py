@@ -36,7 +36,7 @@ core.appendPasive(mp)
 
 # while True:
 # 	str = raw_input('>')
-# 	core.processCommand(Command.build(str))
+# 	core.processCommand(Command.build(str, None))
 
 while True:
     logging.info('Listening...')

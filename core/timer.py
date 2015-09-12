@@ -100,7 +100,7 @@ class StartTimerProcessor(TimerProcessor):
         preTag = None
         total = 0;
         for tag in cmd.tags:
-            if tag.lower().startwith('минут') and preTag is not None:
+            if tag.lower().startswith('минут') and preTag is not None:
                 try:
                     min = int(preTag)
                 except ValueError:
