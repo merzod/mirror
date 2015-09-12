@@ -105,7 +105,7 @@ class StartTimerProcessor(TimerProcessor):
                     hour = int(preTag)
                 except ValueError:
                     hour = 1
-                logging.debug('Hour: %d' % min)
+                logging.debug('Hour: %d' % hour)
                 total += hour * 3600
             if tag.lower().startswith('минут') and preTag is not None:
                 try:
@@ -135,7 +135,7 @@ class StartTimerProcessor(TimerProcessor):
 
 
 class CancelTimerProcessor(TimerProcessor):
-    def __init__(self, tags={'выключи', 'отмен'}):
+    def __init__(self, tags={'выключи', 'отмен', 'остан'}):
         super(CancelTimerProcessor, self).__init__(tags)
 
     def processCommandByMyself(self, cmd):
