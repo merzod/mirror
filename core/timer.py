@@ -99,7 +99,7 @@ class StartTimerProcessor(TimerProcessor):
         global canceled
         preTag = None
         for tag in cmd.tags:
-            if tag == 'sec' and preTag is not None:
+            if tag.lower().startswith('секунд') and preTag is not None:
                 period = None
                 try:
                     period = int(preTag)
