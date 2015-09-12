@@ -21,7 +21,7 @@ class Voice(object):
         self.v.speak(str)
 
     def sayInThread(self, str):
-        t = threading.Thread(target=self.say, args=(self, str))
+        t = threading.Thread(target=self.say, args=(str,))
         t.start()
 
     # function run 'arecord' console cmd for 'sec' seconds and gives back it's stdout
