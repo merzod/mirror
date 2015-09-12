@@ -20,6 +20,9 @@ class Voice(object):
     def say(self, str):
         self.v.speak(str)
 
+    def sayOffline(self, str):
+        subprocess.call('espeak "'+str+'"', shell=True)
+
     def sayInThread(self, str):
         t = threading.Thread(target=self.say, args=(str,))
         t.start()
