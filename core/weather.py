@@ -7,7 +7,7 @@ from voice import Voice
 
 
 class WeatherProcessor(Processor):
-    def __init__(self, tags={'погод'}):
+    def __init__(self, tags={'погод', 'борто'}):
         super(WeatherProcessor, self).__init__(tags)
         self.fr = None
         self.to = None

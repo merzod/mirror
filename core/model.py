@@ -78,16 +78,17 @@ class Core():
         # process command with either active or passive processors.
         if self.active:
             res = self.activeProcessors.processCommand(cmd)
+            logging.info('Suspend Walle')
             self.active = False
         else:
             res = self.passiveProcessors.processCommand(cmd)
-            if res > 0 and len(cmd.tags) > 1:
+            # if res > 0 and len(cmd.tags) > 1:
                 # In case of passive processing succeed - process with active also
-                cmd = self.processCmdOnline(cmd)
-                res2 = self.activeProcessors.processCommand(cmd)
-                if res2 > 0:
-                    # If active processing succeed - suspend Walle
-                    self.active = False
+                # cmd = self.processCmdOnline(cmd)
+                # res2 = self.activeProcessors.processCommand(cmd)
+                # if res2 > 0:
+                #     # If active processing succeed - suspend Walle
+                #     self.active = False
 
         if res == 0:
             logging.warn('Failed to find any suitable processor for: %s' % cmd)
