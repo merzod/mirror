@@ -63,7 +63,7 @@ def getName(val, type):
 
 
 class TimerProcessor(Processor):
-    def __init__(self, tags={'timer'}):
+    def __init__(self, tags={'таймер'}):
         super(TimerProcessor, self).__init__(tags)
 
     def processCommandByMyself(self, cmd):
@@ -90,7 +90,7 @@ class TimerProcessor(Processor):
 
 
 class StartTimerProcessor(TimerProcessor):
-    def __init__(self, tags={'sec'}):
+    def __init__(self, tags={'секунд'}):
         super(StartTimerProcessor, self).__init__(tags)
 
     def processCommandByMyself(self, cmd):
@@ -118,7 +118,7 @@ class StartTimerProcessor(TimerProcessor):
 
 
 class CancelTimerProcessor(TimerProcessor):
-    def __init__(self, tags={'off'}):
+    def __init__(self, tags={'выключи', 'отмен'}):
         super(CancelTimerProcessor, self).__init__(tags)
 
     def processCommandByMyself(self, cmd):

@@ -1,18 +1,20 @@
 import logging
 from collections import deque
+from analyser import Analyser
 
 
 class Command(object):
-    def __init__(self, tags):
+    def __init__(self, tags, data):
         self.tags = tags
+        self.data = data
 
     def __str__(self):
         return 'Cmd: %s' % self.tags
 
     @staticmethod
-    def build(str):
+    def build(str, data):
         logging.debug('Building cmd from str: \'%s\'' % str)
-        return Command(str.split())
+        return Command(str.split(), data)
 
 
 class ChainProcessor(object):
@@ -75,12 +77,14 @@ class Core():
 
         # process command with either active or passive processors.
         if self.active:
+            cmd = self.processCmdOnline(cmd)
             res = self.activeProcessors.processCommand(cmd)
             self.active = False
         else:
             res = self.passiveProcessors.processCommand(cmd)
-            if res > 0:
+            if res > 0 and len(cmd.tags) > 1:
                 # In case of passive processing succeed - process with active also
+                cmd = self.processCmdOnline(cmd)
                 res2 = self.activeProcessors.processCommand(cmd)
                 if res2 > 0:
                     # If active processing succeed - suspend Walle
@@ -89,6 +93,10 @@ class Core():
         if res == 0:
             logging.warn('Failed to find any suitable processor for: %s' % cmd)
 
+    def processCmdOnline(self, cmd):
+        str = Analyser.decodeOnline(cmd.data)
+        cmd.tags = str.split()
+        return cmd
 
     def append(self, processor):
         self.activeProcessors.processors.append(processor)
