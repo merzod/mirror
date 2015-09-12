@@ -77,7 +77,6 @@ class Core():
 
         # process command with either active or passive processors.
         if self.active:
-            cmd = self.processCmdOnline(cmd)
             res = self.activeProcessors.processCommand(cmd)
             self.active = False
         else:
