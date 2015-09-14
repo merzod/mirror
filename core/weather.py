@@ -21,15 +21,15 @@ class WeatherProcessor(Processor):
         info = tree.xpath('//div[@class="infoPrognosis widthProg"]/text()')
 
         # prepare info for the day
-        info = info[i].encode('utf-8').strip()
-        x = info.index(':')
-        info = info[x + 1:]
+        infoStr = info[i].encode('utf-8').strip()
+        x = infoStr.index(':')
+        infoStr = info[x + 1:]
         # prepare day name
         day = 'Сегодня'
         if i == 1:
             day = 'Завтра'
         # prepare string to say
-        s = '%s за бортом %s %s, %s' % (day, fr[i].encode('utf-8')[:3], to[i].encode('utf-8'), info)
+        s = '%s за бортом %s %s, %s' % (day, fr[i].encode('utf-8')[:3], to[i].encode('utf-8'), infoStr)
         logging.info(s)
         Voice.getInstance().say(s)
 
@@ -44,3 +44,4 @@ class TomorrowWeatherProcessor(WeatherProcessor):
 
     def processCommandByMyself(self, cmd):
         self.checkWeather(1)
+
