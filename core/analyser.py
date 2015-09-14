@@ -3,8 +3,9 @@ from context import Context
 from pocketsphinx import *
 from os import path
 
+# Module which analyse voice and decode it into the string, has offile and online analysing capabilities
+# For offline analysing require environment configuration, please refer to pocketsphinx for more details
 class Analyser(object):
-
     MODELDIR = Context.getPocketsphinx('model.dir')
     HMM = Context.getPocketsphinx('hmm')
     THRESHOLD = int(Context.getAudio('threshold'))
@@ -26,7 +27,7 @@ class Analyser(object):
             Analyser.instance = Analyser()
         return Analyser.instance
 
-    # function decode data using decoder, and return decoded string or None
+    # Cunction decode data using decoder, and return decoded string or None
     def decodeOffline(self, data):
         self.decoder.start_utt()
         self.decoder.process_raw(data, False, False)
@@ -36,9 +37,10 @@ class Analyser(object):
         return None
 
     @staticmethod
-    # decode wav input data using google recognize API, returns recognized string
+    # Decode wav input data using google recognize API, returns recognized string
     def decodeOnline(data):
-        stt_url = 'https://www.google.com/speech-api/v2/recognize?output=json&lang=%s&key=%s' % (Context.getGoogle('locale'), Context.getGoogle('app.key'))
+        stt_url = 'https://www.google.com/speech-api/v2/recognize?output=json&lang=%s&key=%s' % (
+            Context.getGoogle('locale'), Context.getGoogle('app.key'))
         fout = StringIO.StringIO()
 
         c = pycurl.Curl()

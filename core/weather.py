@@ -6,23 +6,22 @@ import requests
 from voice import Voice
 
 
+# Base weather processor, show today's weather
 class WeatherProcessor(Processor):
     def __init__(self, tags={'погод', 'борто'}):
         super(WeatherProcessor, self).__init__(tags)
-        self.fr = None
-        self.to = None
-        self.into = None
 
+    # check weather for specified day and say it
     def checkWeather(self, i):
         page = requests.get('http://www.meteoprog.ua/ru/weather/Odesa/#detail')
         tree = html.fromstring(page.text)
 
-        self.fr = tree.xpath('//span[@class="from"]/text()')
-        self.to = tree.xpath('//span[@class="to"]/text()')
-        self.info = tree.xpath('//div[@class="infoPrognosis widthProg"]/text()')
+        fr = tree.xpath('//span[@class="from"]/text()')
+        to = tree.xpath('//span[@class="to"]/text()')
+        info = tree.xpath('//div[@class="infoPrognosis widthProg"]/text()')
 
         # prepare info for the day
-        info = self.info[i].encode('utf-8').strip()
+        info = info[i].encode('utf-8').strip()
         x = info.index(':')
         info = info[x + 1:]
         # prepare day name
@@ -30,7 +29,7 @@ class WeatherProcessor(Processor):
         if i == 1:
             day = 'Завтра'
         # prepare string to say
-        s = '%s за бортом %s %s, %s' % (day, self.fr[i].encode('utf-8')[:3], self.to[i].encode('utf-8'), info)
+        s = '%s за бортом %s %s, %s' % (day, fr[i].encode('utf-8')[:3], to[i].encode('utf-8'), info)
         logging.info(s)
         Voice.getInstance().say(s)
 
@@ -38,6 +37,7 @@ class WeatherProcessor(Processor):
         self.checkWeather(0)
 
 
+# Tomorrow weather processor
 class TomorrowWeatherProcessor(WeatherProcessor):
     def __init__(self, tags={'завтра'}):
         super(TomorrowWeatherProcessor, self).__init__(tags)

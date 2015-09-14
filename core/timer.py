@@ -11,11 +11,13 @@ started = None
 canceled = None
 
 
+# Callback for timer
 def action(processor):
     logging.info('Time!!!: %s' % processor)
     Voice.getInstance().say('Время вышло!')
 
 
+# Time in seconds to human understandable string e.g. 3665 -> '1 hour 1 minute 5 seconds'
 def secToString(sec):
     if sec >= 3600:
         s = sec / 3600
@@ -38,6 +40,7 @@ def secToString(sec):
         return '%d %s' % (sec, getName(sec, 2))
 
 
+# Getting localized name of the time unit
 def getName(val, type):
     if val % 10 == 1 and val != 11:
         if type == 0:
@@ -62,6 +65,7 @@ def getName(val, type):
             return 'секунд'
 
 
+# Base time command processor. Processes timer state functionality
 class TimerProcessor(Processor):
     def __init__(self, tags={'таймер'}):
         super(TimerProcessor, self).__init__(tags)
@@ -79,16 +83,17 @@ class TimerProcessor(Processor):
         else:
             if canceled is None:
                 logging.info('Timer not run. Last was scheduled for %d sec, and finished %d sec ago' % (
-                t.interval, time.time() - started - t.interval))
+                    t.interval, time.time() - started - t.interval))
                 Voice.getInstance().say('Таймер на %s завершился %s назад' % (
-                secToString(t.interval), secToString(time.time() - started - t.interval)))
+                    secToString(t.interval), secToString(time.time() - started - t.interval)))
             else:
                 logging.info('Timer not run. Last was scheduled for %d sec, and canceled %d sec ago' % (
-                t.interval, time.time() - canceled))
+                    t.interval, time.time() - canceled))
                 Voice.getInstance().say('Таймер на %s был отменен %s назад' % (
-                secToString(t.interval), secToString(time.time() - canceled)))
+                    secToString(t.interval), secToString(time.time() - canceled)))
 
 
+# Processes start timer command
 class StartTimerProcessor(TimerProcessor):
     def __init__(self, tags={'секунд', 'минут', 'час'}):
         super(StartTimerProcessor, self).__init__(tags)
@@ -134,6 +139,7 @@ class StartTimerProcessor(TimerProcessor):
             logging.debug('NOTHING')
 
 
+# Processes stop cancel command
 class CancelTimerProcessor(TimerProcessor):
     def __init__(self, tags={'выключи', 'отмен', 'остан'}):
         super(CancelTimerProcessor, self).__init__(tags)

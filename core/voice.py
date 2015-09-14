@@ -16,19 +16,22 @@ class Voice(object):
             Voice.instance = Voice()
         return Voice.instance
 
-    # function says 'str' over pyvona
+    # Function says 'str' over pyvona
     def say(self, str):
         self.v.speak(str)
 
+    # Function says 'str' over espeak
     def sayOffline(self, str):
-        subprocess.call('espeak "'+str+'"', shell=True)
+        subprocess.call('espeak "' + str + '"', shell=True)
 
+    # Fay over pyvona
     def sayInThread(self, str):
         t = threading.Thread(target=self.say, args=(str,))
         t.start()
 
-    # function run 'arecord' console cmd for 'sec' seconds and gives back it's stdout
+    # Function run 'arecord' console cmd for 'sec' seconds and gives back it's stdout
     def listen(self, sec):
-        reccmd = ["arecord", "-D", "plughw:0,0", "-f", "cd", "-c", "1", "-t", "wav", "-d", "%s"%sec, "-q", "-r", Context.getAudio('rate')]
+        reccmd = ["arecord", "-D", "plughw:0,0", "-f", "cd", "-c", "1", "-t", "wav", "-d", "%s" % sec, "-q", "-r",
+                  Context.getAudio('rate')]
         proc = subprocess.Popen(reccmd, stdout=subprocess.PIPE)
         return proc.stdout.read()

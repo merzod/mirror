@@ -9,7 +9,8 @@ from analyser import Analyser
 from context import Context
 from voice import Voice
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
 SEC2LISTEN = Context.getAudio('sec2listen')
 THRESHOLD = int(Context.getAudio('threshold'))
 
@@ -32,7 +33,7 @@ core.append(tp)
 mp = MasterProcessor(core)
 
 core.appendPasive(mp)
-#core.append(mp)
+# core.append(mp)
 
 # while True:
 # 	str = raw_input('>')
@@ -55,4 +56,3 @@ while True:
             core.processCommand(Command.build(result, data))
         else:
             logging.debug('Noise...')
-

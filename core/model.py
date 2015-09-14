@@ -3,6 +3,7 @@ from collections import deque
 from analyser import Analyser
 
 
+# Command to process by the core
 class Command(object):
     def __init__(self, tags, data):
         self.tags = tags
@@ -17,6 +18,7 @@ class Command(object):
         return Command(str.split(), data)
 
 
+# Processor which contains the collection of the processors and tries to apply cmd to most suitable one
 class ChainProcessor(object):
     def __init__(self):
         self.processors = deque()
@@ -41,6 +43,9 @@ class ChainProcessor(object):
         self.processors.append(processor)
 
 
+# Base processor, implements method checkCommand to check by own tags,
+# but when processes the command, then try to process by children first (processCommand of ChainProcessor)
+# if no suitable children - then process by it's own
 class Processor(ChainProcessor):
     def __init__(self, tags):
         super(Processor, self).__init__()
@@ -66,6 +71,7 @@ class Processor(ChainProcessor):
         raise NotImplementedError("Must be implemented")
 
 
+# Processing core. Has state and 2 processing queues (depending on sate)
 class Core():
     def __init__(self):
         self.active = False
@@ -82,22 +88,9 @@ class Core():
             self.active = False
         else:
             res = self.passiveProcessors.processCommand(cmd)
-            # if res > 0 and len(cmd.tags) > 1:
-                # In case of passive processing succeed - process with active also
-                # cmd = self.processCmdOnline(cmd)
-                # res2 = self.activeProcessors.processCommand(cmd)
-                # if res2 > 0:
-                #     # If active processing succeed - suspend Walle
-                #     self.active = False
 
         if res == 0:
             logging.warn('Failed to find any suitable processor for: %s' % cmd)
-
-    def processCmdOnline(self, cmd):
-        str = Analyser.decodeOnline(cmd.data)
-        logging.info('You said(online): %s' % str)
-        cmd.tags = str.split()
-        return cmd
 
     def append(self, processor):
         self.activeProcessors.processors.append(processor)
