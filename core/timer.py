@@ -98,7 +98,7 @@ class StartTimerProcessor(TimerProcessor):
         global started
         global canceled
         preTag = None
-        total = 0;
+        total = 0
         for tag in cmd.tags:
             if tag.lower().startswith('час') and preTag is not None:
                 try:
