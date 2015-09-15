@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-import logging, subprocess, audioop
+import logging, subprocess, audioop, sys
 from model import *
 from weather import *
 from master import *
@@ -35,24 +35,25 @@ mp = MasterProcessor(core)
 core.appendPasive(mp)
 # core.append(mp)
 
-# while True:
-# 	str = raw_input('>')
-# 	core.processCommand(Command.build(str, None))
-
-while True:
-    logging.info('Listening...')
-    data = Voice.getInstance().listen(SEC2LISTEN)
-    rms = audioop.rms(data, 2)
-    logging.debug('RMS: %d threshold: %d' % (rms, THRESHOLD))
-    if rms > THRESHOLD:
-        result = ''
-        if core.active:
-            result = Analyser.decodeOnline(data)
-            logging.info('You said(online): %s' % result)
-        else:
-            result = Analyser.getInstance().decodeOffline(data)
-            logging.info('You said(offline): %s' % result)
-        if result is not None and result:
-            core.processCommand(Command.build(result, data))
-        else:
-            logging.debug('Noise...')
+if len(sys.argv) == 2 and sys.argv[1]=='console':
+    while True:
+        str = raw_input('>')
+        core.processCommand(Command.build(str, None))
+else:
+    while True:
+        logging.info('Listening...')
+        data = Voice.getInstance().listen(SEC2LISTEN)
+        rms = audioop.rms(data, 2)
+        logging.debug('RMS: %d threshold: %d' % (rms, THRESHOLD))
+        if rms > THRESHOLD:
+            result = ''
+            if core.active:
+                result = Analyser.decodeOnline(data)
+                logging.info('You said(online): %s' % result)
+            else:
+                result = Analyser.getInstance().decodeOffline(data)
+                logging.info('You said(offline): %s' % result)
+            if result is not None and result:
+                core.processCommand(Command.build(result, data))
+            else:
+                logging.debug('Noise...')
