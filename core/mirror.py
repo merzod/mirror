@@ -8,9 +8,13 @@ from timer import *
 from analyser import Analyser
 from context import Context
 from voice import Voice
+import urllib3
+urllib3.disable_warnings()
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
+logging.getLogger("requests").setLevel(logging.WARNING)
+
 SEC2LISTEN = Context.getAudio('sec2listen')
 THRESHOLD = int(Context.getAudio('threshold'))
 
