@@ -1,3 +1,4 @@
+#encoding:utf-8
 import logging, subprocess, pyvona, threading
 import pygame
 from context import Context
@@ -29,6 +30,7 @@ class Voice(object):
         channel = pygame.mixer.Channel(5)
         sound = pygame.mixer.Sound('../resources/yes.ogg')
         channel.play(sound)
+        self.v.fetch_voice_ogg('не понял', '../resources/not_clear.ogg')
 
     # Fay over pyvona
     def sayInThread(self, str):
