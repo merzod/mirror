@@ -58,7 +58,7 @@ class Processor(ChainProcessor):
         match = 0
         for myTag in self.tags:
             for cmdTag in cmd.tags:
-                if cmdTag.lower().startswith(myTag.lower()):
+                if cmdTag.decode('utf-8').lower().startswith(myTag.decode('utf-8').lower()):
                     match += 1
         logging.debug('%d match between %s and %s' % (match, cmd, self))
         return match
