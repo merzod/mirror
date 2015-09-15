@@ -27,7 +27,7 @@ class Voice(object):
 
     def sayCachedYes(self):
         channel = pygame.mixer.Channel(5)
-        sound = pygame.mixer.Sound('yes.ogg')
+        sound = pygame.mixer.Sound('../resources/yes.ogg')
         channel.play(sound)
 
     # Fay over pyvona

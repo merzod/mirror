@@ -6,7 +6,7 @@ class Context(object):
 
     def __init__(self):
         self.config = ConfigParser.RawConfigParser()
-        self.config.read('mirror.cfg')
+        self.config.read('../resources/mirror.cfg')
 
     @staticmethod
     def getInstance():
