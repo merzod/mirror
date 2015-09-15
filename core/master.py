@@ -16,4 +16,4 @@ class MasterProcessor(Processor):
             logging.info('Activate Walle')
             self.core.active = True
             # Voice.getInstance().say('Да?')
-            Voice.getInstance().sayOffline('Da?')
+            Voice.getInstance().sayCachedYes()

@@ -1,4 +1,5 @@
 import logging, subprocess, pyvona, threading
+import pygame
 from context import Context
 
 
@@ -23,6 +24,11 @@ class Voice(object):
     # Function says 'str' over espeak
     def sayOffline(self, str):
         subprocess.call('espeak "' + str + '"', shell=True)
+
+    def sayCachedYes(self):
+        channel = pygame.mixer.Channel(5)
+        sound = pygame.mixer.Sound('yes.ogg')
+        channel.play(sound)
 
     # Fay over pyvona
     def sayInThread(self, str):
