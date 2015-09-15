@@ -21,15 +21,13 @@ core = Core()
 
 # build active processors
 proc = WeatherProcessor()
-proc2 = TomorrowWeatherProcessor()
-proc.append(proc2)
+proc.append(TomorrowWeatherProcessor())
+proc.append(NowWeatherProcessor())
 core.append(proc)
 
 tp = TimerProcessor()
-stp = StartTimerProcessor()
-ctp = CancelTimerProcessor()
-tp.append(stp)
-tp.append(ctp)
+tp.append(StartTimerProcessor())
+tp.append(CancelTimerProcessor())
 core.append(tp)
 
 # build pasive processor
