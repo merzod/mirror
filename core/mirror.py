@@ -13,7 +13,8 @@ logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
 logging.getLogger("requests").setLevel(logging.WARNING)
 
-SEC2LISTEN = Context.getAudio('sec2listen')
+ACTIVE_LISTEN = Context.getAudio('active.listen')
+SUSPEND_LISTEN = Context.getAudio('suspend.listen')
 THRESHOLD = int(Context.getAudio('threshold'))
 
 core = Core()
@@ -44,7 +45,11 @@ if len(sys.argv) == 2 and sys.argv[1]=='console':
 else:
     while True:
         logging.info('Listening...')
-        data = Voice.getInstance().listen(SEC2LISTEN)
+        if core.active:
+            data = Voice.getInstance().listen(ACTIVE_LISTEN)
+        else:
+            data = Voice.getInstance().listen(SUSPEND_LISTEN)
+
         rms = audioop.rms(data, 2)
         logging.debug('RMS: %d threshold: %d' % (rms, THRESHOLD))
         if rms > THRESHOLD:
