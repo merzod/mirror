@@ -8,8 +8,6 @@ from os import path
 class Analyser(object):
     MODELDIR = Context.getPocketsphinx('model.dir')
     HMM = Context.getPocketsphinx('hmm')
-    THRESHOLD = int(Context.getAudio('threshold'))
-    SEC2LISTEN = Context.getAudio('sec2listen')
     instance = None
 
     def __init__(self):
