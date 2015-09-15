@@ -4,6 +4,9 @@ from analyser import Analyser
 
 
 # Command to process by the core
+from voice import Voice
+
+
 class Command(object):
     def __init__(self, tags, data):
         self.tags = tags
@@ -84,6 +87,8 @@ class Core():
         # process command with either active or passive processors.
         if self.active:
             res = self.activeProcessors.processCommand(cmd)
+            if res == 0:
+                Voice.getInstance().sayCachedNotClear()
             logging.info('Suspend Walle')
             self.active = False
         else:

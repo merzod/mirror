@@ -30,7 +30,11 @@ class Voice(object):
         channel = pygame.mixer.Channel(5)
         sound = pygame.mixer.Sound('../resources/yes.ogg')
         channel.play(sound)
-        self.v.fetch_voice_ogg('не понял', '../resources/not_clear.ogg')
+
+    def sayCachedNotClear(self):
+        channel = pygame.mixer.Channel(5)
+        sound = pygame.mixer.Sound('../resources/not_clear.ogg')
+        channel.play(sound)
 
     # Fay over pyvona
     def sayInThread(self, str):
