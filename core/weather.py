@@ -23,7 +23,7 @@ class WeatherProcessor(Processor):
         # prepare info for the day
         infoStr = info[i].encode('utf-8').strip()
         x = infoStr.index(':')
-        infoStr = info[x + 1:]
+        infoStr = infoStr[x + 1:]
         # prepare day name
         day = 'Сегодня'
         if i == 1:
