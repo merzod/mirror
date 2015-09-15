@@ -38,7 +38,7 @@ class ChainProcessor(object):
                 maxMatch = iterMatch
                 maxProcessor = processor
         if maxProcessor is not None:
-            logging.info('Chain processing: %s with processor: %s' % (cmd, maxProcessor))
+            logging.debug('Chain processing: %s with processor: %s' % (cmd, maxProcessor))
             maxProcessor.processCommand(cmd)
         return maxMatch
 
