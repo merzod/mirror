@@ -36,6 +36,11 @@ class Voice(object):
         sound = pygame.mixer.Sound('../resources/not_clear.ogg')
         channel.play(sound)
 
+    def sayCachedTimeout(self):
+        channel = pygame.mixer.Channel(5)
+        sound = pygame.mixer.Sound('../resources/timeout.ogg')
+        channel.play(sound)
+
     # Fay over pyvona
     def sayInThread(self, str):
         t = threading.Thread(target=self.say, args=(str,))

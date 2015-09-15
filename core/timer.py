@@ -14,7 +14,7 @@ canceled = None
 # Callback for timer
 def action(processor):
     logging.info('Time!!!: %s' % processor)
-    Voice.getInstance().say('Время вышло!')
+    Voice.getInstance().sayCachedTimeout()
 
 
 # Time in seconds to human understandable string e.g. 3665 -> '1 hour 1 minute 5 seconds'
