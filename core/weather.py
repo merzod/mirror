@@ -57,7 +57,7 @@ class NowWeatherProcessor(WeatherProcessor):
         self.checkWeather(0)
 
     def prepareString(self, tree, day):
-        info = tree.xpath('//img[@class="avatar-img"]/@title')[0].encode('utf-8')
-        x = info.index[':']
+        info = tree.xpath('//img[@class="avatar-img"]/@title')[0].encode('utf-8').strip()
+        x = info.index(':')
         info = info[x + 1:]
         return 'Сейчас %s' % info
