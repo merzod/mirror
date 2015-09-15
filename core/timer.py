@@ -129,6 +129,8 @@ class StartTimerProcessor(TimerProcessor):
                 total += sec
             preTag = tag
         if total > 0:
+            if t is not None and t.isAlive():
+                t.cancel()
             t = threading.Timer(total, action, args=[self])
             started = time.time()
             canceled = None
