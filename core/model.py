@@ -82,7 +82,7 @@ class Core():
         self.passiveProcessors = ChainProcessor()
 
     def processCommand(self, cmd):
-        logging.info('Core active: \'%s\', processing: %s' % (self.active, cmd))
+        logging.debug('Core active: \'%s\', processing: %s' % (self.active, cmd))
 
         # process command with either active or passive processors.
         if self.active:
