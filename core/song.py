@@ -4,7 +4,10 @@ from os import listdir
 from os.path import isfile, join
 from model import *
 import random
-from voice import Voice
+import subprocess
+import time
+
+player = None
 
 class SongProcessor(Processor):
     def __init__(self, tags={'спой'}):
@@ -14,9 +17,14 @@ class SongProcessor(Processor):
         path = '../resources/songs'
         files = [f for f in listdir(path) if isfile(join(path, f)) and f.endswith('.mp3')]
         if len(files) > 0:
-            id = random.randint(0, len(files))
+            id = random.randint(0, len(files)-1)
             name = files[id]
-            Voice.getInstance().playFile(name)
+            global player
+            player = subprocess.Popen(['mplayer', join(path, name)], stdin=subprocess.PIPE)
+            time.sleep(10)
+            player.stdin.write('q')
+
+
 
 
 
