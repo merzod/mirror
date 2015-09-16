@@ -20,6 +20,7 @@ class SongProcessor(Processor):
             id = self.last
             while id == self.last:
                 id = random.randint(0, len(files)-1)
+            self.last = id
             name = files[id]
             global player
             player = subprocess.Popen(['mplayer', join(path, name)], stdin=subprocess.PIPE)
