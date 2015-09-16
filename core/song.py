@@ -11,12 +11,15 @@ player = None
 class SongProcessor(Processor):
     def __init__(self, tags={'спой'}):
         super(SongProcessor, self).__init__(tags)
+        self.last = 0
 
     def processCommandByMyself(self, cmd):
         path = '../resources/songs'
         files = [f for f in listdir(path) if isfile(join(path, f)) and f.endswith('.mp3')]
         if len(files) > 0:
-            id = random.randint(0, len(files)-1)
+            id = self.last
+            while id == self.last:
+                id = random.randint(0, len(files)-1)
             name = files[id]
             global player
             player = subprocess.Popen(['mplayer', join(path, name)], stdin=subprocess.PIPE)
@@ -27,6 +30,7 @@ class SongProcessor(Processor):
         if player is not None:
             player.stdin.write('q')
             player = None
+
 
 
 
