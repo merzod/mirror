@@ -29,7 +29,10 @@ class SongProcessor(Processor):
     def stopSinging():
         global player
         if player is not None:
-            player.stdin.write('q')
+            try:
+                player.stdin.write('q')
+            except IOError:
+                pass
             player = None
 
 
