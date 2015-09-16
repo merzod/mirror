@@ -5,7 +5,6 @@ from os.path import isfile, join
 from model import *
 import random
 import subprocess
-import time
 
 player = None
 
@@ -21,9 +20,13 @@ class SongProcessor(Processor):
             name = files[id]
             global player
             player = subprocess.Popen(['mplayer', join(path, name)], stdin=subprocess.PIPE)
-            time.sleep(10)
-            player.stdin.write('q')
 
+    @staticmethod
+    def stopSinging():
+        global player
+        if player is not None:
+            player.stdin.write('q')
+            player = None
 
 
 

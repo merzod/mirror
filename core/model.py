@@ -1,12 +1,9 @@
 import logging
 from collections import deque
 from analyser import Analyser
-
-
-# Command to process by the core
 from voice import Voice
 
-
+# Command to process by the core
 class Command(object):
     def __init__(self, tags, data):
         self.tags = tags
