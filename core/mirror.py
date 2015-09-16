@@ -8,6 +8,7 @@ from timer import *
 from analyser import Analyser
 from context import Context
 from voice import Voice
+from song import SongProcessor
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
@@ -29,6 +30,8 @@ tp = TimerProcessor()
 tp.append(StartTimerProcessor())
 tp.append(CancelTimerProcessor())
 core.append(tp)
+
+core.append(SongProcessor())
 
 # build pasive processor
 mp = MasterProcessor(core)

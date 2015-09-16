@@ -27,18 +27,17 @@ class Voice(object):
         subprocess.call('espeak "' + str + '"', shell=True)
 
     def sayCachedYes(self):
-        channel = pygame.mixer.Channel(5)
-        sound = pygame.mixer.Sound('../resources/yes.ogg')
-        channel.play(sound)
+        self.playFile('../resources/yes.ogg')
 
     def sayCachedNotClear(self):
-        channel = pygame.mixer.Channel(5)
-        sound = pygame.mixer.Sound('../resources/not_clear.ogg')
-        channel.play(sound)
+        self.playFile('../resources/not_clear.ogg')
 
     def sayCachedTimeout(self):
+        self.playFile('../resources/timeout.ogg')
+
+    def playFile(self, file):
         channel = pygame.mixer.Channel(5)
-        sound = pygame.mixer.Sound('../resources/timeout.ogg')
+        sound = pygame.mixer.Sound(file)
         channel.play(sound)
 
     # Fay over pyvona
