@@ -9,6 +9,7 @@ from analyser import Analyser
 from context import Context
 from voice import Voice
 from song import SongProcessor
+from threshold import ThresholdTuner
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
@@ -16,7 +17,8 @@ logging.getLogger("requests").setLevel(logging.WARNING)
 
 ACTIVE_LISTEN = Context.getAudio('active.listen')
 SUSPEND_LISTEN = Context.getAudio('suspend.listen')
-THRESHOLD = int(Context.getAudio('threshold'))
+threshold = ThresholdTuner(maxlen=Context.getAudio('threshold.samples'),
+                           defthreshold=Context.getAudio('threshold'))
 
 core = Core()
 
@@ -51,9 +53,10 @@ else:
         else:
             data = Voice.getInstance().listen(SUSPEND_LISTEN)
 
+        th = threshold.getThresholed()
         rms = audioop.rms(data, 2)
-        logging.debug('RMS: %d threshold: %d' % (rms, THRESHOLD))
-        if rms > THRESHOLD:
+        logging.debug('RMS: %d threshold: %d' % (rms, th))
+        if rms > th:
             result = ''
             if core.active:
                 result = Analyser.decodeOnline(data)
@@ -65,3 +68,6 @@ else:
                 core.processCommand(Command.build(result, data))
             else:
                 logging.debug('Noise...')
+                threshold.push(rms)
+        else:
+            threshold.push(rms)
