@@ -17,7 +17,7 @@ logging.getLogger("requests").setLevel(logging.WARNING)
 
 ACTIVE_LISTEN = Context.getAudio('active.listen')
 SUSPEND_LISTEN = Context.getAudio('suspend.listen')
-threshold = ThresholdTuner(maxlen=Context.getAudio('threshold.samples'),
+threshold = ThresholdTuner(maxlen=int(Context.getAudio('threshold.samples')),
                            defthreshold=Context.getAudio('threshold'))
 
 core = Core()
