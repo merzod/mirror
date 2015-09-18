@@ -1,5 +1,8 @@
 from collections import deque
 
+
+# Threshold tuner. Keep fixed size queue, and gives back average threshold plus margin
+# In order to tune threshold all you need is to push 'silence' values into queue
 class ThresholdTuner(object):
     def __init__(self, maxlen=5, defthreshold=880, margin=20):
         self.maxlen = maxlen
