@@ -8,7 +8,7 @@ from timer import *
 from analyser import Analyser
 from context import Context
 from voice import Voice
-from song import SongProcessor
+from song import *
 from threshold import ThresholdTuner
 
 logging.basicConfig(level=logging.INFO,
@@ -34,7 +34,9 @@ tp.append(StartTimerProcessor())
 tp.append(CancelTimerProcessor())
 core.append(tp)
 
-core.append(SongProcessor())
+sp = SongProcessor()
+sp.append(SongRepeatProcessor())
+core.append(sp)
 
 # build pasive processor
 mp = MasterProcessor(core)
@@ -42,7 +44,7 @@ mp = MasterProcessor(core)
 core.appendPasive(mp)
 # core.append(mp)
 
-if len(sys.argv) == 2 and sys.argv[1]=='console':
+if len(sys.argv) == 2 and sys.argv[1] == 'console':
     while True:
         str = raw_input('>')
         core.processCommand(Command.build(str, None))
