@@ -5,25 +5,35 @@ from os.path import isfile, join
 from model import *
 import random
 import subprocess
+import logging
 
 player = None
+last = 0
+
 
 class SongProcessor(Processor):
     def __init__(self, tags={'спой'}):
         super(SongProcessor, self).__init__(tags)
-        self.last = 0
+        self.path = '../resources/songs'
 
     def processCommandByMyself(self, cmd):
-        path = '../resources/songs'
-        files = [f for f in listdir(path) if isfile(join(path, f)) and f.endswith('.mp3')]
+        files = self.getSongs()
         if len(files) > 0:
-            id = self.last
-            while id == self.last:
-                id = random.randint(0, len(files)-1)
-            self.last = id
-            name = files[id]
-            global player
-            player = subprocess.Popen(['mplayer', join(path, name)], stdin=subprocess.PIPE)
+            global last
+            id = last
+            while id == last:
+                id = random.randint(0, len(files) - 1)
+            last = id
+            self.play(files[id])
+        else:
+            logging.warn('There is no songs in the folder %s' % self.path)
+
+    def getSongs(self):
+        return [f for f in listdir(self.path) if isfile(join(self.path, f)) and f.endswith('.mp3')]
+
+    def play(self, name):
+        global player
+        player = subprocess.Popen(['mplayer', join(self.path, name)], stdin=subprocess.PIPE)
 
     @staticmethod
     def stopSinging():
@@ -36,7 +46,14 @@ class SongProcessor(Processor):
             player = None
 
 
+class SongRepeatProcessor(SongProcessor):
+    def __init__(self, tags={'повтор', 'еще', 'ещё'}):
+        super(SongRepeatProcessor, self).__init__(tags)
 
-
-
-
+    def processCommandByMyself(self, cmd):
+        global last
+        files = self.getSongs()
+        if len(files) > last:
+            self.play(files[last])
+        else:
+            logging.warn('Found files in folder less then last play id')
