@@ -20,10 +20,12 @@ class Voice(object):
 
     # Function says 'str' over pyvona
     def say(self, str):
+        logging.debug('Say(online): %s' % str)
         self.v.speak(str)
 
     # Function says 'str' over espeak
     def sayOffline(self, str):
+        logging.debug('Say(offline): %s' % str)
         subprocess.call('espeak "' + str + '"', shell=True)
 
     def sayCachedYes(self):
@@ -36,6 +38,7 @@ class Voice(object):
         self.playFile('../resources/timeout.ogg')
 
     def playFile(self, file):
+        logging.debug('Say(cache): %s' % file)
         channel = pygame.mixer.Channel(5)
         sound = pygame.mixer.Sound(file)
         channel.play(sound)
