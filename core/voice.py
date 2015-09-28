@@ -50,7 +50,7 @@ class Voice(object):
 
     # Function run 'arecord' console cmd for 'sec' seconds and gives back it's stdout
     def listen(self, sec):
-        reccmd = ["arecord", "-D", "plughw:0,0", "-f", "cd", "-c", "1", "-t", "wav", "-d", "%s" % sec, "-q", "-r",
+        reccmd = ["arecord", "-D", "plughw:0,0", "-f", "cd", "-c", "1", "-t", "wav", "-d", "%d" % sec, "-q", "-r",
                   Context.getAudio('rate')]
         proc = subprocess.Popen(reccmd, stdout=subprocess.PIPE)
         return proc.stdout.read()

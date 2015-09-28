@@ -12,7 +12,7 @@ last = 0
 
 
 class SongProcessor(Processor):
-    def __init__(self, tags={'спой'}):
+    def __init__(self, tags={'спой', 'петь', 'пой', 'песн'}):
         super(SongProcessor, self).__init__(tags)
         self.path = '../resources/songs'
 
@@ -57,3 +57,10 @@ class SongRepeatProcessor(SongProcessor):
             self.play(files[last])
         else:
             logging.warn('Found files in folder less then last play id')
+
+class SongStop(SongProcessor):
+    def __init__(self, tags={'прекрати', 'останови', 'не'}):
+        super(SongStop, self).__init__(tags)
+
+    def processCommandByMyself(self, cmd):
+        SongProcessor.stopSinging()

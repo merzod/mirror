@@ -1,22 +1,20 @@
 # encoding: utf-8
 
-import logging, subprocess, audioop, sys
-from model import *
+import audioop
+import sys
+
 from weather import *
-from master import *
 from timer import *
-from analyser import Analyser
 from context import Context
-from voice import Voice
 from song import *
 from threshold import ThresholdTuner
 
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
 logging.getLogger("requests").setLevel(logging.WARNING)
 
-ACTIVE_LISTEN = Context.getAudio('active.listen')
-SUSPEND_LISTEN = Context.getAudio('suspend.listen')
+LISTEN = int(Context.getAudio('listen'))
+MAX_SAMPLES = int(Context.getAudio('max.samples'))
 threshold = ThresholdTuner(maxlen=int(Context.getAudio('threshold.samples')),
                            defthreshold=Context.getAudio('threshold'),
                            margin=int(Context.getAudio('threshold.margin')))
@@ -36,41 +34,37 @@ core.append(tp)
 
 sp = SongProcessor()
 sp.append(SongRepeatProcessor())
+sp.append(SongStop())
 core.append(sp)
-
-# build pasive processor
-mp = MasterProcessor(core)
-
-core.appendPasive(mp)
-# core.append(mp)
 
 if len(sys.argv) == 2 and sys.argv[1] == 'console':
     while True:
         str = raw_input('>')
         core.processCommand(Command.build(str, None))
 else:
+    data = ''
+    samples = 0
     while True:
         logging.info('Listening...')
-        if core.active:
-            data = Voice.getInstance().listen(ACTIVE_LISTEN)
-        else:
-            data = Voice.getInstance().listen(SUSPEND_LISTEN)
-
+        dt = Voice.getInstance().listen(LISTEN)
         th = threshold.getThresholed()
-        rms = audioop.rms(data, 2)
+        rms = audioop.rms(dt, 2)
         logging.debug('RMS: %d threshold: %d' % (rms, th))
-        if rms > th:
-            result = ''
-            if core.active:
-                result = Analyser.decodeOnline(data)
-                logging.info('You said(online): %s' % result)
-            else:
-                result = Analyser.getInstance().decodeOffline(data)
-                logging.info('You said(offline): %s' % result)
-            if result is not None and result:
+        if rms > th and samples < MAX_SAMPLES:
+            logging.debug('Recording...')
+            data += dt
+            samples += 1
+        elif len(data) > 0:
+            logging.debug('Start analysing')
+            result = Analyser.decodeOnline(data)
+            logging.info('You said(online): %s' % result)
+            if result:
                 core.processCommand(Command.build(result, data))
             else:
                 logging.debug('Noise...')
                 threshold.push(rms)
+            data = ''
+            samples = 0
         else:
+            logging.debug('Silence...')
             threshold.push(rms)

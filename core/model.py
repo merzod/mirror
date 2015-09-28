@@ -71,31 +71,18 @@ class Processor(ChainProcessor):
         raise NotImplementedError("Must be implemented")
 
 
-# Processing core. Has state and 2 processing queues (depending on sate)
+# Processing core.
 class Core():
     def __init__(self):
-        self.active = False
-        self.activeProcessors = ChainProcessor()
-        self.passiveProcessors = ChainProcessor()
+        self.processors = ChainProcessor()
 
     def processCommand(self, cmd):
-        logging.debug('Core active: \'%s\', processing: %s' % (self.active, cmd))
-
-        # process command with either active or passive processors.
-        if self.active:
-            res = self.activeProcessors.processCommand(cmd)
-            if res == 0:
-                Voice.getInstance().sayCachedNotClear()
-            logging.info('Suspend Walle')
-            self.active = False
-        else:
-            res = self.passiveProcessors.processCommand(cmd)
-
+        logging.debug('Core processing: %s' % cmd)
+        res = self.processors.processCommand(cmd)
+        if res == 0:
+            Voice.getInstance().sayCachedNotClear()
         if res == 0:
             logging.warn('Failed to find any suitable processor for: %s' % cmd)
 
     def append(self, processor):
-        self.activeProcessors.processors.append(processor)
-
-    def appendPasive(self, processor):
-        self.passiveProcessors.processors.append(processor)
+        self.processors.processors.append(processor)
