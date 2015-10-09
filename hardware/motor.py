@@ -10,8 +10,10 @@ class Motor:
     FORWARD = True
     BACKWARD = False
     MIN_SPEED = 15
+    DEF_SPEED = 100
     MAX_SPEED = 100
     MIN_TIME = 1
+    DEF_TIME = 1
     MAX_TIME = 3
 
     def __init__(self, pin_direct1, pin_direct2, pin_speed):
@@ -29,7 +31,7 @@ class Motor:
         GPIO.output(pin_direct2, 0)
         self.p.start(1)
 
-    def move(self, direction=FORWARD, period=1, speed=100):
+    def move(self, direction=FORWARD, period=DEF_TIME, speed=DEF_SPEED):
         logging.debug('Moving motor dir=%s time=%d speed=%d' % (direction, period, speed))
         speed = Motor.check(speed, Motor.MIN_SPEED, Motor.MAX_SPEED)
         period = Motor.check(period, Motor.MIN_TIME, Motor.MAX_TIME)
