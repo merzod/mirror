@@ -52,7 +52,3 @@ class Motor:
     def __del__(self):
         self.p.stop()
         GPIO.cleanup()
-
-m = Motor(33, 35, 37)
-m.move()
-m.move(Motor.BACKWARD, 2, 20)
