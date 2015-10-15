@@ -1,6 +1,10 @@
+import RPi.GPIO as GPIO
 import motor
 import threading
-import time
+import logging
+
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
 
 
 class Base:
@@ -8,6 +12,7 @@ class Base:
     TURN_RIGHT = False
 
     def __init__(self):
+        GPIO.setmode(GPIO.BOARD)
         self.m1 = motor.Motor(33, 35, 37)
         self.m2 = motor.Motor(32, 29, 31)
 
@@ -26,6 +31,9 @@ class Base:
         t2.start()
         t1.join()
         t2.join()
+
+    def __del__(self):
+        GPIO.cleanup()
 
 base = Base()
 base.move()
