@@ -25,16 +25,16 @@ class Screen:
         draw = ImageDraw.Draw(image)
         draw.rectangle((0, 0, self.width, self.height), outline=0, fill=0)
 
-        draw.line((64, 1, 126, 1), outline=255, fill=0)
-        draw.line((64, 2, 126, 2), outline=255, fill=0)
+        draw.line((64, 1, 126, 1), fill=255)
+        draw.line((64, 2, 126, 2), fill=255)
 
         draw.ellipse((64, 4, 85, 25), outline=255, fill=0)
 
-        draw.line((86, 14, 126, 14), outline=255, fill=0)
-        draw.line((86, 15, 126, 15), outline=255, fill=0)
+        draw.line((86, 14, 126, 14), fill=255)
+        draw.line((86, 15, 126, 15), fill=255)
 
-        draw.line((86, 17, 126, 17), outline=255, fill=0)
-        draw.line((86, 18, 126, 18), outline=255, fill=0)
+        draw.line((86, 17, 126, 17), fill=255)
+        draw.line((86, 18, 126, 18), fill=255)
 
         self.disp.image(image)
         self.disp.display()
