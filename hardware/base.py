@@ -65,7 +65,7 @@ class Base:
 
         t1 = threading.Thread(target=target, args=(angle, ))
         t1.start()
-        time.sleep(1)
+        time.sleep(3)
 
 
     def __del__(self):
