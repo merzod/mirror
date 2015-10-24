@@ -31,8 +31,8 @@ class Screen:
         draw.ellipse((64, 4, 85, 16), outline=255, fill=255)
         draw.ellipse((66, 6, 83, 14), outline=255, fill=0)
 
-        for i in range(0, 9):
-            x = 14 + i*2
+        for i in range(0, 10):
+            x = 12 + i*2
             draw.line((90, x, 126, x), fill=255)
         draw.line((90, 29, 126, 29), fill=255)
         draw.line((90, 31, 126, 31), fill=255)
