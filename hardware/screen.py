@@ -33,7 +33,8 @@ class Screen:
         for i in range(0, 9):
             x = 14 + i*2
             draw.line((86, x, 126, x), fill=255)
-        draw.line((86, 30, 126, 30), fill=255)
+        draw.line((86, 29, 126, 29), fill=255)
+        draw.line((86, 31, 126, 31), fill=255)
 
         self.disp.image(image)
         self.disp.display()
