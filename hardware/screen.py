@@ -30,11 +30,9 @@ class Screen:
 
         draw.ellipse((64, 4, 85, 14), outline=255, fill=0)
 
-        draw.line((86, 14, 126, 14), fill=255)
-        draw.line((86, 15, 126, 15), fill=255)
-
-        draw.line((86, 17, 126, 17), fill=255)
-        draw.line((86, 18, 126, 18), fill=255)
+        for i in range(0, 5):
+            x = 14 + i*2
+            draw.line((86, x, 126, x), fill=255)
 
         self.disp.image(image)
         self.disp.display()
