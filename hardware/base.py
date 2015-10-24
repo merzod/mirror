@@ -65,6 +65,7 @@ class Base:
 
         t1 = threading.Thread(target=target, args=(angle, ))
         t1.start()
+        time.sleep(1)
 
 
     def __del__(self):
@@ -74,7 +75,6 @@ if __name__ == '__main__':
     base = Base()
     base.move_arm(Base.LEFT_ARM, Base.UP)
     base.move_arm(Base.RIGHT_ARM, Base.UP)
-    time.sleep(5)
     base.move_arm(Base.LEFT_ARM, Base.DOWN)
     base.move_arm(Base.RIGHT_ARM, Base.DOWN)
     time.sleep(5)
