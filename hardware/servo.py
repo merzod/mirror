@@ -22,15 +22,19 @@ class Servo:
     # Control the servo. Turn to specified angle.
     def move(self, angle):
         angle = utils.check(angle, self.MIN_ANGLE, self.MAX_ANGLE)
-        val = float(angle)*18.0/180.0+5
+        val = float(angle) * 18.0 / 180.0 + 5
         logging.debug("Moving Servo angle=%d val=%d" % (angle, val))
         self.p.ChangeDutyCycle(val)
 
     def __del__(self):
         self.p.stop()
 
+
 if __name__ == '__main__':
-    s = Servo(10)
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
+    GPIO.setmode(GPIO.BOARD)
+    s = Servo(11)
     s.move(0)
     s.move(90)
     s.move(180)

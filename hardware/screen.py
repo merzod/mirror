@@ -16,15 +16,26 @@ class Screen:
         self.disp.clear()
         self.disp.display()
 
-        self.width = self.disp.width
-        self.height = self.disp.height
+        self.width = 128 #self.disp.width
+        self.height = 64 #self.disp.height
         logging.debug('Screen resolution: %sX%s' % (self.width, self.height))
 
     def draw(self):
         image = Image.new('1', (self.width, self.height))
         draw = ImageDraw.Draw(image)
         draw.rectangle((0, 0, self.width, self.height), outline=0, fill=0)
-        draw.ellipse((2, 2, 22, self.height - 2), outline=255, fill=0)
+
+        draw.line((64, 1, 126, 1), outline=255, fill=0)
+        draw.line((64, 2, 126, 2), outline=255, fill=0)
+
+        draw.ellipse((64, 4, 85, 25), outline=255, fill=0)
+
+        draw.line((86, 14, 126, 14), outline=255, fill=0)
+        draw.line((86, 15, 126, 15), outline=255, fill=0)
+
+        draw.line((86, 17, 126, 17), outline=255, fill=0)
+        draw.line((86, 18, 126, 18), outline=255, fill=0)
+
         self.disp.image(image)
         self.disp.display()
 
@@ -32,8 +43,10 @@ class Screen:
         self.disp.clear()
         self.disp.display()
 
-if __name__ == 'main':
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
     s = Screen()
     s.draw()
     time.sleep(3)
-
