@@ -16,8 +16,8 @@ class Screen:
         self.disp.clear()
         self.disp.display()
 
-        self.width = 128 #self.disp.width
-        self.height = 64 #self.disp.height
+        self.width = self.disp.width
+        self.height = self.disp.height
         logging.debug('Screen resolution: %sX%s' % (self.width, self.height))
 
     def draw(self):
@@ -28,7 +28,7 @@ class Screen:
         draw.line((64, 1, 126, 1), fill=255)
         draw.line((64, 2, 126, 2), fill=255)
 
-        draw.ellipse((64, 4, 85, 25), outline=255, fill=0)
+        draw.ellipse((64, 4, 85, 14), outline=255, fill=0)
 
         draw.line((86, 14, 126, 14), fill=255)
         draw.line((86, 15, 126, 15), fill=255)
