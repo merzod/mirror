@@ -21,12 +21,12 @@ class Base:
     DOWN = False
 
     def __init__(self):
-        GPIO.setmode(GPIO.BOARD)
-        self.left_leg = motor.Motor(37, 35, 33)
-        self.right_leg = motor.Motor(36, 38, 40)
-        # self.head = servo.Servo(11)
-        # self.left_arm = servo.Servo(13, min_angle=0, max_angle=90)
-        # self.right_arm = servo.Servo(15, min_angle=90, max_angle=180)
+        GPIO.setmode(GPIO.BCM)
+        self.left_leg = motor.Motor(26, 19, 13)
+        self.right_leg = motor.Motor(16, 20, 21)
+        # self.head = servo.Servo(17)
+        # self.left_arm = servo.Servo(27, min_angle=0, max_angle=90)
+        # self.right_arm = servo.Servo(22, min_angle=90, max_angle=180)
         self.face = screen.Screen()
         self.face.draw()
 
