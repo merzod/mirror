@@ -22,8 +22,8 @@ class Base:
 
     def __init__(self):
         GPIO.setmode(GPIO.BOARD)
-        self.left_leg = motor.Motor(36, 38, 40)
-        self.right_leg = motor.Motor(37, 35, 33)
+        self.left_leg = motor.Motor(37, 35, 33)
+        self.right_leg = motor.Motor(36, 38, 40)
         # self.head = servo.Servo(11)
         # self.left_arm = servo.Servo(13, min_angle=0, max_angle=90)
         # self.right_arm = servo.Servo(15, min_angle=90, max_angle=180)
@@ -77,8 +77,9 @@ if __name__ == '__main__':
     # base.move_arm(Base.RIGHT_ARM, Base.UP)
     # base.move_arm(Base.LEFT_ARM, Base.DOWN)
     # base.move_arm(Base.RIGHT_ARM, Base.DOWN)
-    base.move()
-    base.left_leg.move(motor.Motor.FORWARD)
+    for i in range(0, 4):
+        base.move()
+        base.turn()
     # base.move(motor.Motor.BACKWARD, period=2)
     # base.turn()
     # base.turn(Base.TURN_RIGHT)
