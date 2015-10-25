@@ -22,13 +22,13 @@ class Base:
 
     def __init__(self):
         GPIO.setmode(GPIO.BOARD)
-        self.left_leg = motor.Motor(33, 35, 37)
-        self.right_leg = motor.Motor(32, 29, 31)
-        self.head = servo.Servo(11)
-        self.left_arm = servo.Servo(13, min_angle=0, max_angle=90)
-        self.right_arm = servo.Servo(15, min_angle=90, max_angle=180)
-        self.face = screen.Screen()
-        self.face.draw()
+        self.left_leg = motor.Motor(36, 38, 40)
+        self.right_leg = motor.Motor(37, 35, 33)
+        # self.head = servo.Servo(11)
+        # self.left_arm = servo.Servo(13, min_angle=0, max_angle=90)
+        # self.right_arm = servo.Servo(15, min_angle=90, max_angle=180)
+        # self.face = screen.Screen()
+        # self.face.draw()
 
 
     def move(self, direction=motor.Motor.FORWARD, period=motor.Motor.DEF_TIME, speed=motor.Motor.DEF_SPEED):
@@ -61,7 +61,7 @@ class Base:
         if arm == Base.LEFT_ARM:
             target = self.left_arm.move
         elif arm == Base.RIGHT_ARM:
-            target = self.right_arm
+            target = self.right_arm.move
 
         t1 = threading.Thread(target=target, args=(angle, ))
         t1.start()
@@ -73,12 +73,12 @@ class Base:
 
 if __name__ == '__main__':
     base = Base()
-    base.move_arm(Base.LEFT_ARM, Base.UP)
-    base.move_arm(Base.RIGHT_ARM, Base.UP)
-    base.move_arm(Base.LEFT_ARM, Base.DOWN)
-    base.move_arm(Base.RIGHT_ARM, Base.DOWN)
-    time.sleep(5)
-    # base.move()
+    # base.move_arm(Base.LEFT_ARM, Base.UP)
+    # base.move_arm(Base.RIGHT_ARM, Base.UP)
+    # base.move_arm(Base.LEFT_ARM, Base.DOWN)
+    # base.move_arm(Base.RIGHT_ARM, Base.DOWN)
+    base.move()
+    base.left_leg.move(motor.Motor.FORWARD)
     # base.move(motor.Motor.BACKWARD, period=2)
     # base.turn()
     # base.turn(Base.TURN_RIGHT)
