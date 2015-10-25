@@ -12,7 +12,7 @@ class Motor:
     MIN_SPEED = 15
     DEF_SPEED = 100
     MAX_SPEED = 100
-    MIN_TIME = 1
+    MIN_TIME = 0.1
     DEF_TIME = 1
     MAX_TIME = 3
 

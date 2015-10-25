@@ -27,8 +27,8 @@ class Base:
         # self.head = servo.Servo(11)
         # self.left_arm = servo.Servo(13, min_angle=0, max_angle=90)
         # self.right_arm = servo.Servo(15, min_angle=90, max_angle=180)
-        # self.face = screen.Screen()
-        # self.face.draw()
+        self.face = screen.Screen()
+        self.face.draw()
 
 
     def move(self, direction=motor.Motor.FORWARD, period=motor.Motor.DEF_TIME, speed=motor.Motor.DEF_SPEED):
@@ -39,7 +39,7 @@ class Base:
         t1.join()
         t2.join()
 
-    def turn(self, direction=TURN_LEFT, period=motor.Motor.DEF_TIME, speed=motor.Motor.DEF_SPEED):
+    def turn(self, direction=TURN_LEFT, period=0.4, speed=motor.Motor.DEF_SPEED):
         t1 = threading.Thread(target=self.left_leg.move, args=(not direction, period, speed))
         t2 = threading.Thread(target=self.right_leg.move, args=(direction, period, speed))
         t1.start()
