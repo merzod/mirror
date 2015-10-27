@@ -24,7 +24,7 @@ class Base:
         GPIO.setmode(GPIO.BCM)
         self.left_leg = motor.Motor(26, 19, 13)
         self.right_leg = motor.Motor(16, 20, 21)
-        # self.head = servo.Servo(17)
+        self.head = servo.Servo(17)
         # self.left_arm = servo.Servo(27, min_angle=0, max_angle=90)
         # self.right_arm = servo.Servo(22, min_angle=90, max_angle=180)
         self.face = screen.Screen()
@@ -77,9 +77,9 @@ if __name__ == '__main__':
     # base.move_arm(Base.RIGHT_ARM, Base.UP)
     # base.move_arm(Base.LEFT_ARM, Base.DOWN)
     # base.move_arm(Base.RIGHT_ARM, Base.DOWN)
-    for i in range(0, 4):
-        base.move()
-        base.turn()
+    # for i in range(0, 4):
+    #    base.move()
+    #    base.turn()
     # base.move(motor.Motor.BACKWARD, period=2)
     # base.turn()
     # base.turn(Base.TURN_RIGHT)
