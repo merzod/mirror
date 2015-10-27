@@ -8,6 +8,7 @@ import time
 class Servo:
     MIN_ANGLE = 0
     MAX_ANGLE = 180
+    TIME_TO_TURN = 1
 
     # Servo constructor. Initialize GPIO connector. Also one can limit servo angles
     def __init__(self, pin, min_angle=MIN_ANGLE, max_angle=MAX_ANGLE):
@@ -15,17 +16,16 @@ class Servo:
         self.pin = pin
         self.min_angle = min_angle
         self.max_angle = max_angle
-
         GPIO.setup(self.pin, GPIO.OUT)
-        self.p = GPIO.PWM(self.pin, 100)
 
     # Control the servo. Turn to specified angle.
     def move(self, angle):
         angle = utils.check(angle, self.MIN_ANGLE, self.MAX_ANGLE)
         val = float(angle) * 18.0 / 180.0 + 5
         logging.debug("Moving Servo angle=%d val=%d" % (angle, val))
+        self.p = GPIO.PWM(self.pin, 100)
         self.p.start(val)
-        time.sleep(1)
+        time.sleep(Servo.TIME_TO_TURN)
         self.p.stop()
 
 if __name__ == '__main__':
@@ -34,5 +34,8 @@ if __name__ == '__main__':
     GPIO.setmode(GPIO.BOARD)
     s = Servo(11)
     s.move(0)
+    time.sleep(1)
     s.move(90)
+    time.sleep(1)
     s.move(180)
+    time.sleep(1)
