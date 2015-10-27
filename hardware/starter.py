@@ -1,7 +1,12 @@
-from msvcrt import getch
 import logging
 from base import Base
 from motor import Motor
+import curses
+
+stdscr = curses.initscr()
+stdscr.noecho()
+stdscr.cbreak()
+stdscr.keypad(1)
 
 ESCAPE = 27
 SPECIAL_FLAG = 224
@@ -25,21 +30,18 @@ RIGHT_ARM_DOWN = 115
 walle = Base()
 
 while True:
-    key = ord(getch())
+    key = stdscr.getch()
     logging.debug('Pressed: %d' % key)
     if key == ESCAPE:
         break
-    elif key == SPECIAL_FLAG:  # Special keys (arrows, f keys, ins, del, etc.)
-        key = ord(getch())
-        logging.debug('Special key: %d' % key)
-        if key == MOVE_FORWARD:
-            walle.move(Motor.FORWARD)
-        elif key == MOVE_BACKWARD:
-            walle.move(Motor.BACKWARD)
-        elif key == TURN_LEFT:
-            walle.turn(Base.TURN_LEFT)
-        elif key == TURN_RIGHT:
-            walle.turn(Base.TURN_RIGHT)
+    elif key == MOVE_FORWARD:
+        walle.move(Motor.FORWARD)
+    elif key == MOVE_BACKWARD:
+        walle.move(Motor.BACKWARD)
+    elif key == TURN_LEFT:
+        walle.turn(Base.TURN_LEFT)
+    elif key == TURN_RIGHT:
+        walle.turn(Base.TURN_RIGHT)
     elif key == HEAD_LEFT:
         walle.move_head(Base.TURN_LEFT)
     elif key == HEAD_RIGHT:
