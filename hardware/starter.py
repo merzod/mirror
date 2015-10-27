@@ -4,18 +4,18 @@ from motor import Motor
 import curses
 
 stdscr = curses.initscr()
-stdscr.noecho()
-stdscr.cbreak()
+curses.noecho()
+curses.cbreak()
 stdscr.keypad(1)
 
 ESCAPE = 27
 SPECIAL_FLAG = 224
 
 # arrows
-MOVE_FORWARD = 72
-MOVE_BACKWARD = 80
-TURN_LEFT = 75
-TURN_RIGHT = 77
+MOVE_FORWARD = 259
+MOVE_BACKWARD = 258
+TURN_LEFT = 260
+TURN_RIGHT = 261
 
 # '[' and ']'
 HEAD_LEFT = 91
@@ -54,3 +54,8 @@ while True:
         walle.move_arm(Base.RIGHT_ARM, Base.UP)
     elif key == RIGHT_ARM_DOWN:
         walle.move_arm(Base.RIGHT_ARM, Base.DOWN)
+
+curses.nocbreak()
+stdscr.keypad(0)
+curses.echo()
+curses.endwin()
