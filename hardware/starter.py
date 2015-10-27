@@ -1,5 +1,7 @@
 from msvcrt import getch
 import logging
+from base import Base
+from motor import Motor
 
 ESCAPE = 27
 SPECIAL_FLAG = 224
@@ -20,32 +22,33 @@ LEFT_ARM_DOWN = 97
 RIGHT_ARM_UP = 119
 RIGHT_ARM_DOWN = 115
 
+walle = Base()
 
 while True:
     key = ord(getch())
     logging.debug('Pressed: %d' % key)
     if key == ESCAPE:
         break
-    elif key == SPECIAL_FLAG: # Special keys (arrows, f keys, ins, del, etc.)
+    elif key == SPECIAL_FLAG:  # Special keys (arrows, f keys, ins, del, etc.)
         key = ord(getch())
         logging.debug('Special key: %d' % key)
         if key == MOVE_FORWARD:
-            pass
+            walle.move(Motor.FORWARD)
         elif key == MOVE_BACKWARD:
-            pass
+            walle.move(Motor.BACKWARD)
         elif key == TURN_LEFT:
-            pass
+            walle.turn(Base.TURN_LEFT)
         elif key == TURN_RIGHT:
-            pass
+            walle.turn(Base.TURN_RIGHT)
     elif key == HEAD_LEFT:
-        pass
+        walle.move_head(Base.TURN_LEFT)
     elif key == HEAD_RIGHT:
-        pass
+        walle.move_head(Base.TURN_RIGHT)
     elif key == LEFT_ARM_UP:
-        pass
+        walle.move_arm(Base.LEFT_ARM, Base.UP)
     elif key == LEFT_ARM_DOWN:
-        pass
+        walle.move_arm(Base.LEFT_ARM, Base.DOWN)
     elif key == RIGHT_ARM_UP:
-        pass
+        walle.move_arm(Base.RIGHT_ARM, Base.UP)
     elif key == RIGHT_ARM_DOWN:
-        pass
+        walle.move_arm(Base.RIGHT_ARM, Base.DOWN)

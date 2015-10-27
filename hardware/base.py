@@ -1,10 +1,10 @@
 import RPi.GPIO as GPIO
-import motor
 import threading
 import logging
 import servo
 import screen
 import time
+from motor import Motor
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
@@ -22,16 +22,16 @@ class Base:
 
     def __init__(self):
         GPIO.setmode(GPIO.BCM)
-        self.left_leg = motor.Motor(26, 19, 13)
-        self.right_leg = motor.Motor(16, 20, 21)
+        self.left_leg = Motor(26, 19, 13)
+        self.right_leg = Motor(16, 20, 21)
         self.head = servo.Servo(17)
-        # self.left_arm = servo.Servo(27, min_angle=0, max_angle=90)
-        # self.right_arm = servo.Servo(22, min_angle=90, max_angle=180)
+        self.head_angle = 90
+        self.left_arm = servo.Servo(27, min_angle=0, max_angle=90)
+        self.right_arm = servo.Servo(22, min_angle=90, max_angle=180)
         self.face = screen.Screen()
         self.face.draw()
 
-
-    def move(self, direction=motor.Motor.FORWARD, period=motor.Motor.DEF_TIME, speed=motor.Motor.DEF_SPEED):
+    def move(self, direction, period=Motor.DEF_TIME, speed=Motor.DEF_SPEED):
         t1 = threading.Thread(target=self.left_leg.move, args=(direction, period, speed))
         t2 = threading.Thread(target=self.right_leg.move, args=(direction, period, speed))
         t1.start()
@@ -39,7 +39,7 @@ class Base:
         t1.join()
         t2.join()
 
-    def turn(self, direction=TURN_LEFT, period=0.4, speed=motor.Motor.DEF_SPEED):
+    def turn(self, direction, period=0.4, speed=Motor.DEF_SPEED):
         t1 = threading.Thread(target=self.left_leg.move, args=(not direction, period, speed))
         t2 = threading.Thread(target=self.right_leg.move, args=(direction, period, speed))
         t1.start()
@@ -63,13 +63,22 @@ class Base:
         elif arm == Base.RIGHT_ARM:
             target = self.right_arm.move
 
-        t1 = threading.Thread(target=target, args=(angle, ))
+        t1 = threading.Thread(target=target, args=(angle,))
         t1.start()
         time.sleep(3)
 
+    def move_head(self, direction):
+        old_angle = self.head_angle
+        if direction == Base.TURN_LEFT and self.head_angle >= 90:
+            self.head_angle -= 90
+        elif direction == Base.TURN_RIGHT and self.head_angle <= 90:
+            self.head_angle += 90
+        if old_angle != self.head_angle:
+            self.head.move(self.head_angle)
 
     def __del__(self):
         GPIO.cleanup()
+
 
 if __name__ == '__main__':
     base = Base()
@@ -83,4 +92,3 @@ if __name__ == '__main__':
     # base.move(motor.Motor.BACKWARD, period=2)
     # base.turn()
     # base.turn(Base.TURN_RIGHT)
-
