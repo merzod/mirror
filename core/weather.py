@@ -63,5 +63,7 @@ class NowWeatherProcessor(WeatherProcessor):
         return 'Сейчас %s' % info
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
     wp = WeatherProcessor()
     wp.checkWeather(0)
