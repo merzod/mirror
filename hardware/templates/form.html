@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<style>
+    body {
+    background-color: #f8f7ff;
+    }
+
+    a {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    text-decoration: none;
+    line-height: 200%;
+    color: initial;
+    width: 35px;
+    height: 35px;
+    }
+
+    .head {
+    text-align: center;
+    border-bottom: solid 1px gray;
+    padding-bottom: 5px;
+    }
+
+    .core {
+    }
+
+    .label {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #727272;
+    }
+
+    .head .actions {
+    width: 33.33%;
+    display: inline-block;
+    }
+
+    .h_action {
+    float: left;
+    text-align: center;
+    width: 50%;
+    position: relative;
+    }
+
+    .v_action {
+    text-align: center;
+    margin-top: 10px;
+    }
+
+    .l_arm, .move, .r_arm {
+    display: inline;
+    float: left;
+    width: 33.2%;
+    text-align: center;
+    border-bottom: solid 1px gray;
+    padding-bottom: 10px;
+    }
+
+    .move {
+    border-left: solid 1px gray;
+    border-right: solid 1px gray;
+    }
+
+</style>
+
+<head>
+    <title>Wall-e Control</title>
+</head>
+
+<body>
+<div class="head">
+    <div class="label">Head</div>
+    <div class="actions">
+        <div class="h_action"><a href="/{{head_left}}">&#8592;</a></div>
+        <div class="h_action"><a href="/{{head_right}}">&#8594;</a></div>
+    </div>
+</div>
+<div class="core">
+    <div class="l_arm">
+        <div class="label">Left Arm</div>
+        <div class="actions">
+            <div class="v_action"><a href="/{{left_arm_up}}">&#8593;</a></div>
+            <div class="v_action"><a href="/{{left_arm_down}}">&#8595;</a></div>
+        </div>
+    </div>
+    <div class="move">
+        <div class="label">Move</div>
+        <div class="actions">
+            <div class="v_action"><a href="/{{move_forward}}">&#8593;</a></div>
+            <div class="h_action"><a href="/{{turn_left}}">&#8592;</a></div>
+            <div class="h_action"><a href="/{{turn_right}}">&#8594;</a></div>
+            <div class="v_action"><a href="/{{move_backward}}">&#8595;</a></div>
+        </div>
+    </div>
+    <div class="r_arm">
+        <div class="label">Right Arm</div>
+        <div class="actions">
+            <div class="v_action"><a href="/{{right_arm_up}}">&#8593;</a></div>
+            <div class="v_action"><a href="/{{right_arm_down}}">&#8595;</a></div>
+        </div>
+    </div>
+</div>
+</body>
