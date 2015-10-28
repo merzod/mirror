@@ -3,7 +3,6 @@ import threading
 import logging
 import servo
 import screen
-import time
 from motor import Motor
 
 logging.basicConfig(level=logging.DEBUG,
@@ -19,6 +18,8 @@ class Base:
 
     UP = True
     DOWN = False
+
+    HEAD_MOVE_ANGLE = 45
 
     def __init__(self):
         GPIO.setmode(GPIO.BCM)
@@ -63,18 +64,18 @@ class Base:
         elif arm == Base.RIGHT_ARM:
             target = self.right_arm.move
 
-        t1 = threading.Thread(target=target, args=(angle,))
-        t1.start()
-        time.sleep(3)
+        t = threading.Thread(target=target, args=(angle,))
+        t.start()
 
     def move_head(self, direction):
         old_angle = self.head_angle
-        if direction == Base.TURN_LEFT and self.head_angle >= 90:
-            self.head_angle -= 90
-        elif direction == Base.TURN_RIGHT and self.head_angle <= 90:
-            self.head_angle += 90
+        if direction == Base.TURN_LEFT and self.head_angle >= Base.HEAD_MOVE_ANGLE:
+            self.head_angle -= Base.HEAD_MOVE_ANGLE
+        elif direction == Base.TURN_RIGHT and self.head_angle <= 180 - Base.HEAD_MOVE_ANGLE:
+            self.head_angle += Base.HEAD_MOVE_ANGLE
         if old_angle != self.head_angle:
-            self.head.move(self.head_angle)
+            t = threading.Thread(target=self.head.move, args=(self.head_angle, ))
+            t.start()
 
     def __del__(self):
         GPIO.cleanup()
