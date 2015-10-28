@@ -8,7 +8,7 @@ import time
 class Servo:
     MIN_ANGLE = 0
     MAX_ANGLE = 180
-    TIME_TO_TURN = 1
+    TIME_TO_TURN = 0.5
 
     # Servo constructor. Initialize GPIO connector. Also one can limit servo angles
     def __init__(self, pin, min_angle=MIN_ANGLE, max_angle=MAX_ANGLE):

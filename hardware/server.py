@@ -10,7 +10,7 @@ controller = Controller()
 
 @app.route("/")
 def hello():
-    return render_template('form.html')
+    return render_template('form.html', **build_constants())
 
 @app.route("/<code>")
 def move(code):
@@ -38,4 +38,4 @@ def build_constants():
     return map
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8191, debug=True)
+    app.run(host="0.0.0.0", port=80, debug=True)
