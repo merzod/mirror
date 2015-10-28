@@ -40,7 +40,7 @@ class Base:
         t1.join()
         t2.join()
 
-    def turn(self, direction, period=0.4, speed=Motor.DEF_SPEED):
+    def turn(self, direction, period=0.3, speed=Motor.DEF_SPEED):
         t1 = threading.Thread(target=self.left_leg.move, args=(not direction, period, speed))
         t2 = threading.Thread(target=self.right_leg.move, args=(direction, period, speed))
         t1.start()

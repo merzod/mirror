@@ -45,3 +45,6 @@ class Controller:
             self.walle.move_arm(Base.RIGHT_ARM, Base.UP)
         elif code == Controller.RIGHT_ARM_DOWN:
             self.walle.move_arm(Base.RIGHT_ARM, Base.DOWN)
+
+    def __del__(self):
+        self.walle.__del__()
