@@ -61,3 +61,7 @@ class NowWeatherProcessor(WeatherProcessor):
         x = info.index(':')
         info = info[x + 1:]
         return 'Сейчас %s' % info
+
+if __name__ == '__main__':
+    wp = WeatherProcessor()
+    wp.checkWeather(0)
