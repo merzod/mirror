@@ -33,7 +33,7 @@ class WeatherProcessor(Processor):
         if day == 1:
             dayStr = 'Завтра'
         # prepare string to say
-        return '%s за бортом %s %s, %s' % (dayStr, fr[day].encode('utf-8')[:3], to[day].encode('utf-8'), infoStr)
+        return '%s за бортом %s %s, %s' % (dayStr, fr[day].encode('utf-8')[:-3], to[day].encode('utf-8'), infoStr)
 
     def processCommandByMyself(self, cmd):
         self.checkWeather(0)
