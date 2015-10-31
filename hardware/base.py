@@ -19,6 +19,9 @@ class Base:
     UP = True
     DOWN = False
 
+    FORWARD = Motor.FORWARD
+    BACKWARD = Motor.BACKWARD
+
     HEAD_MOVE_ANGLE = 45
 
     def __init__(self):
@@ -37,16 +40,12 @@ class Base:
         t2 = threading.Thread(target=self.right_leg.move, args=(direction, period, speed))
         t1.start()
         t2.start()
-        t1.join()
-        t2.join()
 
     def turn(self, direction, period=0.3, speed=Motor.DEF_SPEED):
         t1 = threading.Thread(target=self.left_leg.move, args=(not direction, period, speed))
         t2 = threading.Thread(target=self.right_leg.move, args=(direction, period, speed))
         t1.start()
         t2.start()
-        t1.join()
-        t2.join()
 
     def move_arm(self, arm, position):
         # select the angle, UP for both arms is 90 degrees. down is 0 for left arm and 180 for right one

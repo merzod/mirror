@@ -1,5 +1,4 @@
 import base
-from motor import Motor
 from base import Base
 import logging
 
@@ -26,9 +25,9 @@ class Controller:
     def process(self, code):
         logging.debug('Processing code: %s' % code)
         if code == Controller.MOVE_FORWARD:
-            self.walle.move(Motor.FORWARD)
+            self.walle.move(Base.FORWARD)
         elif code == Controller.MOVE_BACKWARD:
-            self.walle.move(Motor.BACKWARD)
+            self.walle.move(Base.BACKWARD)
         elif code == Controller.TURN_LEFT:
             self.walle.turn(Base.TURN_LEFT)
         elif code == Controller.TURN_RIGHT:
