@@ -1,6 +1,10 @@
 import base
 from base import Base
 import logging
+import sys
+sys.path.append('../core/')
+from voice import Voice
+
 
 class Controller:
     # arrows
@@ -9,7 +13,7 @@ class Controller:
     TURN_LEFT = 260
     TURN_RIGHT = 261
 
-    # '[' and ']'
+    # 'pgup' and 'pgdown'
     HEAD_LEFT = 91
     HEAD_RIGHT = 93
 
@@ -18,6 +22,10 @@ class Controller:
     LEFT_ARM_DOWN = 97
     RIGHT_ARM_UP = 119
     RIGHT_ARM_DOWN = 115
+
+    # 1, 2 ...
+    SOUND_1 = 100
+    SOUND_2 = 101
 
     def __init__(self):
         self.walle = base.Base()
@@ -44,6 +52,10 @@ class Controller:
             self.walle.move_arm(Base.RIGHT_ARM, Base.UP)
         elif code == Controller.RIGHT_ARM_DOWN:
             self.walle.move_arm(Base.RIGHT_ARM, Base.DOWN)
+        elif code == Controller.SOUND_1:
+            Voice.getInstance().playFile('../resources/wall-e.ogg')
+        elif code == Controller.SOUND_2:
+            Voice.getInstance().playFile('../resources/eve.ogg')
 
     def __del__(self):
         self.walle.__del__()
