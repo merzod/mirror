@@ -32,8 +32,14 @@
     color: #727272;
     }
 
-    .head .actions {
+    .head .actions, .sound .actions {
     width: 33.33%;
+    display: inline-block;
+    }
+
+    .sound {
+    width: 100%;
+    text-align: center;
     display: inline-block;
     }
 
@@ -100,6 +106,13 @@
             <div class="v_action"><a href="/{{right_arm_up}}">&#8593;</a></div>
             <div class="v_action"><a href="/{{right_arm_down}}">&#8595;</a></div>
         </div>
+    </div>
+</div>
+<div class="sound">
+    <div class="label">Sounds</div>
+    <div class="actions">
+        <div class="h_action"><a href="/{{sound_1}}">1</a></div>
+        <div class="h_action"><a href="/{{sound_2}}">2</a></div>
     </div>
 </div>
 </body>
