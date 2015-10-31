@@ -1,6 +1,9 @@
 import logging
 import time
 from base import Base
+import sys
+sys.path.append('../core/')
+from voice import Voice
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
@@ -18,8 +21,8 @@ if __name__ == "__main__":
         direction = not direction
         walle.move_arm(Base.RIGHT_ARM, direction)
         time.sleep(0.3)
+    Voice.getInstance().playFile('../resources/wall-e.ogg')
 
-    # TODO: say walle
     # TODO: screen demo
     time.sleep(1)
 
