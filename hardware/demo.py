@@ -34,8 +34,11 @@ if __name__ == "__main__":
     # turn
     walle.head.move(0)
     walle.turn(Base.TURN_LEFT, 1)
+    time.sleep(0.2)
     walle.head.move(90)
     time.sleep(1)
     walle.head.move(180)
     walle.turn(Base.TURN_RIGHT, 1)
+    time.sleep(0.2)
     walle.head.move(90)
+    time.sleep(2)
