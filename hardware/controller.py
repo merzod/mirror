@@ -14,8 +14,8 @@ class Controller:
     TURN_RIGHT = 261
 
     # 'pgup' and 'pgdown'
-    HEAD_LEFT = 91
-    HEAD_RIGHT = 93
+    HEAD_LEFT = 339
+    HEAD_RIGHT = 338
 
     # q, a, w, s
     LEFT_ARM_UP = 113
@@ -24,8 +24,8 @@ class Controller:
     RIGHT_ARM_DOWN = 115
 
     # 1, 2 ...
-    SOUND_1 = 100
-    SOUND_2 = 101
+    SOUND_1 = 49
+    SOUND_2 = 50
 
     def __init__(self):
         self.walle = base.Base()
