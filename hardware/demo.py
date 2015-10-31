@@ -5,7 +5,7 @@ from base import Base
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
 
-if __name__ == "__name__":
+if __name__ == "__main__":
     walle = Base()
 
     # move forward
@@ -14,7 +14,7 @@ if __name__ == "__name__":
 
     # shake hand twice
     direction = Base.DOWN
-    for i in range(0, 3):
+    for i in range(0, 4):
         direction = not direction
         walle.move_arm(Base.RIGHT_ARM, direction)
         time.sleep(0.3)
@@ -28,12 +28,14 @@ if __name__ == "__name__":
     time.sleep(1)
     walle.head.move(180)
     time.sleep(1)
+    walle.head.move(90)
+    time.sleep(1)
 
     # turn
-    walle.head.move(45)
+    walle.head.move(0)
     walle.turn(Base.TURN_LEFT, 1)
     walle.head.move(90)
-    time.sleep(0.5)
-    walle.head.move(135)
+    time.sleep(1)
+    walle.head.move(180)
     walle.turn(Base.TURN_RIGHT, 1)
     walle.head.move(90)
