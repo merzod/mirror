@@ -35,7 +35,7 @@ class Screen:
 
         # batt level
         for i in range(0, 10):
-            x = 12 + i*2
+            x = 12 + i * 2
             draw.line((90, x, 126, x), fill=255)
         draw.line((90, 29, 126, 29), fill=255)
         draw.line((90, 31, 126, 31), fill=255)
@@ -43,10 +43,15 @@ class Screen:
         self.disp.image(image)
         self.disp.display()
 
-    def draw_img(self):
-        image = Image.open('sc.png').resize((self.width, self.height), Image.ANTIALIAS).convert('1')
+    def draw_img(self, name):
+        image = Image.open(name).resize((self.width, self.height), Image.ANTIALIAS).convert('1')
         self.disp.image(image)
         self.disp.display()
+
+    def play(self, frames):
+        for k, v in frames.iteritems():
+            self.draw_img(k)
+            time.sleep(v)
 
     def __del__(self):
         self.disp.clear()
@@ -57,5 +62,11 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
     s = Screen()
-    s.draw_img()
+    frames1 = {"../resources/anim1/sc0.png": 1,
+               "../resources/anim1/sc1.png": 0.2,
+               "../resources/anim1/sc2.png": 1}
+    frames2 = {"../resources/anim1/sc1.png": 0.2,
+               "../resources/anim1/sc0.png": 1}
+    s.play(frames1)
+    s.play(frames2)
     time.sleep(3)
