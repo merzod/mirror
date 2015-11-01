@@ -11,9 +11,17 @@ logging.basicConfig(level=logging.DEBUG,
 if __name__ == "__main__":
     walle = Base()
 
+    # hands up
+    walle.move_arm(Base.LEFT_ARM, Base.UP)
+    walle.move_arm(Base.RIGHT_ARM, Base.UP)
+    time.sleep(0.5)
+
     # move forward
     walle.move(Base.FORWARD)
-    time.sleep(2)
+    time.sleep(1)
+    walle.move_arm(Base.LEFT_ARM, Base.DOWN)
+    walle.move_arm(Base.RIGHT_ARM, Base.DOWN)
+    time.sleep(1)
 
     # shake hand twice
     direction = Base.DOWN
@@ -32,22 +40,18 @@ if __name__ == "__main__":
     walle.face.play(frames)
     walle.face.state()
 
-    # turn head
-    walle.head.move(0)
-    time.sleep(1)
-    walle.head.move(180)
-    time.sleep(1)
-    walle.head.move(90)
-    time.sleep(1)
-
-    # turn
+    # turn left
     walle.head.move(0)
     walle.turn(Base.TURN_LEFT, 1)
     time.sleep(0.2)
     walle.head.move(90)
     time.sleep(1)
+
+    # turn right
     walle.head.move(180)
     walle.turn(Base.TURN_RIGHT, 1)
     time.sleep(0.2)
     walle.head.move(90)
-    time.sleep(2)
+    time.sleep(1)
+
+    #
