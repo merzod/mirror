@@ -33,7 +33,7 @@ class Base:
         self.left_arm = servo.Servo(27, min_angle=0, max_angle=90)
         self.right_arm = servo.Servo(22, min_angle=90, max_angle=180)
         self.face = screen.Screen()
-        self.face.draw()
+        self.face.state()
 
     def move(self, direction, period=Motor.DEF_TIME, speed=Motor.DEF_SPEED):
         t1 = threading.Thread(target=self.left_leg.move, args=(direction, period, speed))

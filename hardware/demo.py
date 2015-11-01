@@ -23,8 +23,14 @@ if __name__ == "__main__":
         time.sleep(0.3)
     Voice.getInstance().playFile('../resources/wall-e.ogg')
 
-    # TODO: screen demo
-    time.sleep(1)
+    # screen demo
+    frames = [["../resources/anim1/sc0.png", 1],
+           ["../resources/anim1/sc1.png", 0.1],
+           ["../resources/anim1/sc2.png", 0.5],
+           ["../resources/anim1/sc1.png", 0.1],
+           ["../resources/anim1/sc0.png", 1]]
+    walle.face.play(frames)
+    walle.face.state()
 
     # turn head
     walle.head.move(0)

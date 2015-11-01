@@ -20,7 +20,7 @@ class Screen:
         self.height = self.disp.height
         logging.debug('Screen resolution: %sX%s' % (self.width, self.height))
 
-    def draw(self):
+    def state(self):
         image = Image.new('1', (self.width, self.height))
         draw = ImageDraw.Draw(image)
         draw.rectangle((0, 0, self.width, self.height), outline=0, fill=0)
