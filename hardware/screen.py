@@ -49,9 +49,9 @@ class Screen:
         self.disp.display()
 
     def play(self, frames):
-        for k, v in frames.iteritems():
-            self.draw_img(k)
-            time.sleep(v)
+        for frame in frames:
+            self.draw_img(frame[0])
+            time.sleep(frame[1])
 
     def __del__(self):
         self.disp.clear()
@@ -62,11 +62,10 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
     s = Screen()
-    frames1 = {"../resources/anim1/sc0.png": 1,
-               "../resources/anim1/sc1.png": 0.2,
-               "../resources/anim1/sc2.png": 1}
-    frames2 = {"../resources/anim1/sc1.png": 0.2,
-               "../resources/anim1/sc0.png": 1}
+    frames1 = [["../resources/anim1/sc0.png", 1],
+               ["../resources/anim1/sc1.png", 0.2],
+               ["../resources/anim1/sc2.png", 1],
+               ["../resources/anim1/sc1.png", 0.2],
+               ["../resources/anim1/sc0.png", 1]]
     s.play(frames1)
-    s.play(frames2)
     time.sleep(3)
