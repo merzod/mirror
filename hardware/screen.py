@@ -63,9 +63,9 @@ if __name__ == '__main__':
                         format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
     s = Screen()
     frames1 = [["../resources/anim1/sc0.png", 1],
-               ["../resources/anim1/sc1.png", 0.2],
-               ["../resources/anim1/sc2.png", 1],
-               ["../resources/anim1/sc1.png", 0.2],
+               ["../resources/anim1/sc1.png", 0.1],
+               ["../resources/anim1/sc2.png", 0.5],
+               ["../resources/anim1/sc1.png", 0.1],
                ["../resources/anim1/sc0.png", 1]]
     s.play(frames1)
     time.sleep(3)
