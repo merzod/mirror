@@ -9,11 +9,17 @@ import sys
 sys.path.append('../hardware/')
 import screen
 
+SCREEN_UPDATE = 1
 
-t = None
+timer = None
 started = None
 canceled = None
 
+def tick():
+    if timer is not None and timer.isAlive():
+        threading.Timer(SCREEN_UPDATE, tick).start()
+        passed = time.time() - started
+        screen.ScreenWrapper.getInstance().write(secToFormat(timer.interval - passed), size=25)
 
 # Callback for timer
 def action(processor):
@@ -82,28 +88,28 @@ class TimerProcessor(Processor):
         super(TimerProcessor, self).__init__(tags)
 
     def processCommandByMyself(self, cmd):
-        global t
+        global timer
         logging.debug('Checking timer state')
-        if t is None:
+        if timer is None:
             logging.info('Timer not run')
             Voice.getInstance().say('Таймер не запущен')
-        elif t.isAlive():
+        elif timer.isAlive():
             passed = time.time() - started
-            logging.info('Timer is run for %d sec, left %d sec' % (t.interval, t.interval - passed))
-            screen.ScreenWrapper.getInstance().write(secToFormat(t.interval - passed), size=25)
-            Voice.getInstance().say('Осталось %s' % secToString(t.interval - passed))
+            logging.info('Timer is run for %d sec, left %d sec' % (timer.interval, timer.interval - passed))
+            screen.ScreenWrapper.getInstance().write(secToFormat(timer.interval - passed), size=25)
+            Voice.getInstance().say('Осталось %s' % secToString(timer.interval - passed))
         else:
             if canceled is None:
                 logging.info('Timer not run. Last was scheduled for %d sec, and finished %d sec ago' % (
-                    t.interval, time.time() - started - t.interval))
+                    timer.interval, time.time() - started - timer.interval))
                 screen.ScreenWrapper.getInstance().write(secToFormat(time.time() - started), size=25)
                 Voice.getInstance().say('Таймер на %s завершился %s назад' % (
-                    secToString(t.interval), secToString(time.time() - started - t.interval)))
+                    secToString(timer.interval), secToString(time.time() - started - timer.interval)))
             else:
                 logging.info('Timer not run. Last was scheduled for %d sec, and canceled %d sec ago' % (
-                    t.interval, time.time() - canceled))
+                    timer.interval, time.time() - canceled))
                 Voice.getInstance().say('Таймер на %s был отменен %s назад' % (
-                    secToString(t.interval), secToString(time.time() - canceled)))
+                    secToString(timer.interval), secToString(time.time() - canceled)))
 
 
 # Processes start timer command
@@ -112,7 +118,7 @@ class StartTimerProcessor(TimerProcessor):
         super(StartTimerProcessor, self).__init__(tags)
 
     def processCommandByMyself(self, cmd):
-        global t
+        global timer
         global started
         global canceled
         preTag = None
@@ -142,14 +148,14 @@ class StartTimerProcessor(TimerProcessor):
                 total += sec
             preTag = tag
         if total > 0:
-            if t is not None and t.isAlive():
-                t.cancel()
-            t = threading.Timer(total, action, args=[self])
+            if timer is not None and timer.isAlive():
+                timer.cancel()
+            timer = threading.Timer(total, action, args=[self])
             started = time.time()
             canceled = None
-            t.start()
+            timer.start()
+            tick()
             logging.info('Start timer for %s' % secToString(total))
-            screen.ScreenWrapper.getInstance().write(secToFormat(total), size=25)
             Voice.getInstance().say('Таймер на %s запущен' % secToString(total))
         else:
             logging.debug('NOTHING')
@@ -161,9 +167,9 @@ class CancelTimerProcessor(TimerProcessor):
         super(CancelTimerProcessor, self).__init__(tags)
 
     def processCommandByMyself(self, cmd):
-        global t, canceled
-        if t is not None and t.isAlive():
+        global timer, canceled
+        if timer is not None and timer.isAlive():
             logging.info('Cancel timer')
-            t.cancel()
+            timer.cancel()
             canceled = time.time()
             Voice.getInstance().say('Таймер остановлен')
