@@ -33,6 +33,9 @@ class ScreenWrapper(object):
     def __init__(self, screen):
         self.screen = screen
 
+    def __del__(self):
+        del self.screen
+
     @staticmethod
     def getInstance():
         if ScreenWrapper.instance is None:
@@ -92,3 +95,4 @@ if __name__ == '__main__':
 
     ScreenWrapper.getInstance().write('+20 +24', size=30)
     time.sleep(3)
+    del ScreenWrapper.instance
