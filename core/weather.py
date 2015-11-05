@@ -4,6 +4,9 @@ from model import *
 from lxml import html
 import requests
 from voice import Voice
+import sys
+sys.path.append('../hardware/')
+import screen
 
 
 # Base weather processor, show today's weather
@@ -32,6 +35,9 @@ class WeatherProcessor(Processor):
         dayStr = 'Сегодня'
         if day == 1:
             dayStr = 'Завтра'
+        # prepare string to show
+        screen.ScreenWrapper.getInstance().write('%s %s' %
+                                                 (fr[day].encode('utf-8')[:-3], to[day].encode('utf-8')[:-3]), size=30)
         # prepare string to say
         return '%s за бортом %s %s, %s' % (dayStr, fr[day].encode('utf-8')[:-3], to[day].encode('utf-8'), infoStr)
 

@@ -28,8 +28,16 @@ class Screen(object):
 
 
 class ScreenWrapper(object):
+    instance = None
+
     def __init__(self, screen):
         self.screen = screen
+
+    @staticmethod
+    def getInstance():
+        if ScreenWrapper.instance is None:
+            ScreenWrapper.instance = ScreenWrapper(Screen())
+        return ScreenWrapper.instance
 
     def draw_walle_state(self):
         image = Image.new('1', (self.screen.width, self.screen.height))
@@ -75,7 +83,6 @@ class ScreenWrapper(object):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
-    s = ScreenWrapper(Screen())
     # frames1 = [["../resources/anim1/sc0.png", 1],
     #            ["../resources/anim1/sc1.png", 0.1],
     #            ["../resources/anim1/sc2.png", 0.5],
@@ -83,5 +90,5 @@ if __name__ == '__main__':
     #            ["../resources/anim1/sc0.png", 1]]
     # s.play(frames1)
 
-    s.write('+20 +24', size=30)
+    ScreenWrapper.getInstance().write('+20 +24', size=30)
     time.sleep(3)
