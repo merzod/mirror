@@ -64,11 +64,11 @@ class ScreenWrapper(object):
             self.draw_file(frame[0])
             time.sleep(frame[1])
 
-    def write(self, text):
+    def write(self, text, x=0, y=0, size=8):
         image = Image.new('1', (self.screen.width, self.screen.height))
         draw = ImageDraw.Draw(image)
-        font = ImageFont.truetype('../resources/font/VCR_OSD_MONO_1.001.ttf', 8)
-        draw.text((0, 0), text, font=font, fill=255)
+        font = ImageFont.truetype('../resources/font/VCR_OSD_MONO_1.001.ttf', size)
+        draw.text((x, y), text, font=font, fill=255)
         self.screen.disp.image(image)
         self.screen.disp.display()
 
@@ -83,5 +83,5 @@ if __name__ == '__main__':
     #            ["../resources/anim1/sc0.png", 1]]
     # s.play(frames1)
 
-    s.write('Alex')
+    s.write('+20 +24', size=30)
     time.sleep(3)
