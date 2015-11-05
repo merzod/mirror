@@ -42,6 +42,13 @@ class ScreenWrapper(object):
             ScreenWrapper.instance = ScreenWrapper(Screen())
         return ScreenWrapper.instance
 
+    def cleanup(self):
+        image = Image.new('1', (self.screen.width, self.screen.height))
+        draw = ImageDraw.Draw(image)
+        draw.rectangle((0, 0, self.screen.width, self.screen.height), outline=0, fill=0)
+        self.screen.disp.image(image)
+        self.screen.disp.display()
+
     def draw_walle_state(self):
         image = Image.new('1', (self.screen.width, self.screen.height))
         draw = ImageDraw.Draw(image)
@@ -95,4 +102,5 @@ if __name__ == '__main__':
 
     ScreenWrapper.getInstance().write('+20 +24', size=30)
     time.sleep(3)
+    ScreenWrapper.getInstance().cleanup()
     del ScreenWrapper.instance
