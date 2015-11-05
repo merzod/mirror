@@ -87,7 +87,7 @@ class Core():
             Voice.getInstance().sayCachedNotClear()
         if res == 0:
             logging.warn('Failed to find any suitable processor for: %s' % cmd)
-        screen.ScreenWrapper.getInstance().cleanup()
+        screen.ScreenWrapper.getInstance().draw_walle_state()
 
 
     def append(self, processor):

@@ -8,6 +8,10 @@ from timer import *
 from context import Context
 from song import *
 from threshold import ThresholdTuner
+import sys
+sys.path.append('../hardware/')
+import screen
+
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
@@ -36,6 +40,8 @@ sp = SongProcessor()
 sp.append(SongRepeatProcessor())
 sp.append(SongStop())
 core.append(sp)
+
+screen.ScreenWrapper.getInstance().draw_walle_state()
 
 if len(sys.argv) == 2 and sys.argv[1] == 'console':
     while True:

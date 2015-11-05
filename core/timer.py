@@ -96,6 +96,7 @@ class TimerProcessor(Processor):
             if canceled is None:
                 logging.info('Timer not run. Last was scheduled for %d sec, and finished %d sec ago' % (
                     t.interval, time.time() - started - t.interval))
+                screen.ScreenWrapper.getInstance().write(secToFormat(time.time() - started), size=25)
                 Voice.getInstance().say('Таймер на %s завершился %s назад' % (
                     secToString(t.interval), secToString(time.time() - started - t.interval)))
             else:
