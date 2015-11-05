@@ -9,9 +9,9 @@ from context import Context
 from song import *
 from threshold import ThresholdTuner
 import sys
+
 sys.path.append('../hardware/')
 import screen
-
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
@@ -62,6 +62,8 @@ try:
                 data += dt
                 samples += 1
             elif len(data) > 0:
+                data += dt  # append last sample (e.g. there is only one word at start of the sample, total RMS will
+                # be bellow threshold, but still need to analyze it)
                 logging.debug('Start analysing')
                 result = Analyser.decodeOnline(data)
                 logging.info('You said(online): %s' % result)
