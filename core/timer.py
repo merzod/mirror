@@ -48,7 +48,7 @@ def secToFormat(time):
     hour = time / 3600
     min = s = time % 3600 / 60
     sec = time % 3600 % 60
-    return '%d:%d:%d' % (hour, min, sec)
+    return '%01d:%02d:%02d' % (hour, min, sec)
 
 
 # Getting localized name of the time unit
