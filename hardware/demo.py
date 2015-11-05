@@ -38,7 +38,7 @@ if __name__ == "__main__":
            ["../resources/anim1/sc1.png", 0.1],
            ["../resources/anim1/sc0.png", 1]]
     walle.face.play(frames)
-    walle.face.state()
+    walle.face.draw_walle_state()
 
     # turn left
     walle.head.move(0)

@@ -8,7 +8,7 @@ import Image
 import ImageDraw
 
 
-class Screen:
+class Screen(object):
     def __init__(self, pin=24):
         logging.debug('Initialize screen')
         self.disp = Adafruit_SSD1306.SSD1306_128_32(rst=pin)
@@ -20,10 +20,19 @@ class Screen:
         self.height = self.disp.height
         logging.debug('Screen resolution: %sX%s' % (self.width, self.height))
 
-    def state(self):
-        image = Image.new('1', (self.width, self.height))
+    def __del__(self):
+        self.disp.clear()
+        self.disp.display()
+
+
+class ScreenWrapper(object):
+    def __init__(self, screen):
+        self.screen = screen
+
+    def draw_walle_state(self):
+        image = Image.new('1', (self.screen.width, self.screen.height))
         draw = ImageDraw.Draw(image)
-        draw.rectangle((0, 0, self.width, self.height), outline=0, fill=0)
+        draw.rectangle((0, 0, self.screen.width, self.screen.height), outline=0, fill=0)
 
         # title line
         draw.line((64, 1, 126, 1), fill=255)
@@ -40,28 +49,24 @@ class Screen:
         draw.line((90, 29, 126, 29), fill=255)
         draw.line((90, 31, 126, 31), fill=255)
 
-        self.disp.image(image)
-        self.disp.display()
+        self.screen.disp.image(image)
+        self.screen.disp.display()
 
-    def draw_img(self, name):
-        image = Image.open(name).resize((self.width, self.height), Image.ANTIALIAS).convert('1')
-        self.disp.image(image)
-        self.disp.display()
+    def draw_file(self, name):
+        image = Image.open(name).resize((self.screen.width, self.screen.height), Image.ANTIALIAS).convert('1')
+        self.screen.disp.image(image)
+        self.screen.disp.display()
 
     def play(self, frames):
         for frame in frames:
-            self.draw_img(frame[0])
+            self.draw_file(frame[0])
             time.sleep(frame[1])
-
-    def __del__(self):
-        self.disp.clear()
-        self.disp.display()
 
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
-    s = Screen()
+    s = ScreenWrapper()
     frames1 = [["../resources/anim1/sc0.png", 1],
                ["../resources/anim1/sc1.png", 0.1],
                ["../resources/anim1/sc2.png", 0.5],
