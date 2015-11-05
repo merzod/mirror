@@ -49,6 +49,14 @@ class ScreenWrapper(object):
         self.screen.disp.image(image)
         self.screen.disp.display()
 
+    def draw_processing(self):
+        image = Image.new('1', (self.screen.width, self.screen.height))
+        draw = ImageDraw.Draw(image)
+        draw.rectangle((0, 29, 10, 32), outline=255, fill=255)
+        self.screen.disp.image(image)
+        self.screen.disp.display()
+
+
     def draw_walle_state(self):
         image = Image.new('1', (self.screen.width, self.screen.height))
         draw = ImageDraw.Draw(image)
