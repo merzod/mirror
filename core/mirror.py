@@ -58,6 +58,7 @@ try:
             rms = audioop.rms(dt, 2)
             logging.debug('RMS: %d threshold: %d' % (rms, th))
             if rms > th and samples < MAX_SAMPLES:
+                screen.ScreenWrapper.getInstance().draw_processing()
                 logging.debug('Recording...')
                 data += dt
                 samples += 1

@@ -81,7 +81,6 @@ class Core():
         self.processors = ChainProcessor()
 
     def processCommand(self, cmd):
-        screen.ScreenWrapper.getInstance().draw_processing()
         logging.debug('Core processing: %s' % cmd)
         res = self.processors.processCommand(cmd)
         if res == 0:

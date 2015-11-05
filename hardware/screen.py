@@ -52,6 +52,7 @@ class ScreenWrapper(object):
     def draw_processing(self):
         image = Image.new('1', (self.screen.width, self.screen.height))
         draw = ImageDraw.Draw(image)
+        self.fill_walle_state(draw)
         draw.rectangle((0, 29, 10, 32), outline=255, fill=255)
         self.screen.disp.image(image)
         self.screen.disp.display()
@@ -60,6 +61,12 @@ class ScreenWrapper(object):
     def draw_walle_state(self):
         image = Image.new('1', (self.screen.width, self.screen.height))
         draw = ImageDraw.Draw(image)
+        self.fill_walle_state(draw)
+
+        self.screen.disp.image(image)
+        self.screen.disp.display()
+
+    def fill_walle_state(self, draw):
         draw.rectangle((0, 0, self.screen.width, self.screen.height), outline=0, fill=0)
 
         # title line
@@ -76,9 +83,6 @@ class ScreenWrapper(object):
             draw.line((90, x, 126, x), fill=255)
         draw.line((90, 29, 126, 29), fill=255)
         draw.line((90, 31, 126, 31), fill=255)
-
-        self.screen.disp.image(image)
-        self.screen.disp.display()
 
     def draw_file(self, name):
         image = Image.open(name).resize((self.screen.width, self.screen.height), Image.ANTIALIAS).convert('1')
