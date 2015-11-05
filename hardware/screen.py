@@ -6,6 +6,8 @@ import Adafruit_SSD1306
 
 import Image
 import ImageDraw
+import ImageFont
+
 
 
 class Screen(object):
@@ -62,15 +64,22 @@ class ScreenWrapper(object):
             self.draw_file(frame[0])
             time.sleep(frame[1])
 
+    def write(self, text):
+        image = Image.new('1', (self.screen.width, self.screen.height))
+        draw = ImageDraw.Draw(image)
+        font = ImageFont.truetype('../resources/font/VCR_OSD_MONO_1.001.ttf', 8)
+        draw.text((0, 0), text, font=font, fill=255)
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
     s = ScreenWrapper(Screen())
-    frames1 = [["../resources/anim1/sc0.png", 1],
-               ["../resources/anim1/sc1.png", 0.1],
-               ["../resources/anim1/sc2.png", 0.5],
-               ["../resources/anim1/sc1.png", 0.1],
-               ["../resources/anim1/sc0.png", 1]]
-    s.play(frames1)
+    # frames1 = [["../resources/anim1/sc0.png", 1],
+    #            ["../resources/anim1/sc1.png", 0.1],
+    #            ["../resources/anim1/sc2.png", 0.5],
+    #            ["../resources/anim1/sc1.png", 0.1],
+    #            ["../resources/anim1/sc0.png", 1]]
+    # s.play(frames1)
+
+    s.write('Alex')
     time.sleep(3)
