@@ -65,7 +65,7 @@ class NowWeatherProcessor(WeatherProcessor):
 
     def prepareString(self, tree, day):
         info = tree.xpath('//img[@class="avatar-img"]/@title')[0].encode('utf-8').strip()
-        temp = tree.xpath('//div[@class="dayWeatherNow floatL"]//div[@class="temp"]/text()')[0].encode('utf-8')
+        temp = tree.xpath('//div[@class="dayWeatherNow floatL"]//span[@class="temperature_value"]/text()')[0].encode('utf-8')
         screen.ScreenWrapper.getInstance().write(temp[:-3], size=30)
         x = info.index(':')
         info = info[x + 1:]
