@@ -43,34 +43,37 @@ core.append(sp)
 
 screen.ScreenWrapper.getInstance().draw_walle_state()
 
-if len(sys.argv) == 2 and sys.argv[1] == 'console':
-    while True:
-        str = raw_input('>')
-        core.processCommand(Command.build(str, None))
-else:
-    data = ''
-    samples = 0
-    while True:
-        logging.info('Listening...')
-        dt = Voice.getInstance().listen(LISTEN)
-        th = threshold.getThresholed()
-        rms = audioop.rms(dt, 2)
-        logging.debug('RMS: %d threshold: %d' % (rms, th))
-        if rms > th and samples < MAX_SAMPLES:
-            logging.debug('Recording...')
-            data += dt
-            samples += 1
-        elif len(data) > 0:
-            logging.debug('Start analysing')
-            result = Analyser.decodeOnline(data)
-            logging.info('You said(online): %s' % result)
-            if result:
-                core.processCommand(Command.build(result, data))
+try:
+    if len(sys.argv) == 2 and sys.argv[1] == 'console':
+        while True:
+            str = raw_input('>')
+            core.processCommand(Command.build(str, None))
+    else:
+        data = ''
+        samples = 0
+        while True:
+            logging.info('Listening...')
+            dt = Voice.getInstance().listen(LISTEN)
+            th = threshold.getThresholed()
+            rms = audioop.rms(dt, 2)
+            logging.debug('RMS: %d threshold: %d' % (rms, th))
+            if rms > th and samples < MAX_SAMPLES:
+                logging.debug('Recording...')
+                data += dt
+                samples += 1
+            elif len(data) > 0:
+                logging.debug('Start analysing')
+                result = Analyser.decodeOnline(data)
+                logging.info('You said(online): %s' % result)
+                if result:
+                    core.processCommand(Command.build(result, data))
+                else:
+                    logging.debug('Noise...')
+                    threshold.push(rms)
+                data = ''
+                samples = 0
             else:
-                logging.debug('Noise...')
+                logging.debug('Silence...')
                 threshold.push(rms)
-            data = ''
-            samples = 0
-        else:
-            logging.debug('Silence...')
-            threshold.push(rms)
+except KeyboardInterrupt:
+    del screen.ScreenWrapper.instance
