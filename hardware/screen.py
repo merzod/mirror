@@ -69,6 +69,8 @@ class ScreenWrapper(object):
         draw = ImageDraw.Draw(image)
         font = ImageFont.truetype('../resources/font/VCR_OSD_MONO_1.001.ttf', 8)
         draw.text((0, 0), text, font=font, fill=255)
+        self.screen.disp.image(image)
+        self.screen.disp.display()
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
