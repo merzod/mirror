@@ -66,7 +66,7 @@ class ScreenWrapper(object):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)s\t(%(threadName)-10s) %(filename)s:%(lineno)d\t%(message)s')
-    s = ScreenWrapper()
+    s = ScreenWrapper(Screen())
     frames1 = [["../resources/anim1/sc0.png", 1],
                ["../resources/anim1/sc1.png", 0.1],
                ["../resources/anim1/sc2.png", 0.5],
