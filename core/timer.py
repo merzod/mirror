@@ -5,6 +5,10 @@ import logging
 import time
 from model import *
 from voice import Voice
+import sys
+sys.path.append('../hardware/')
+import screen
+
 
 t = None
 started = None
@@ -38,6 +42,13 @@ def secToString(sec):
         return str
     else:
         return '%d %s' % (sec, getName(sec, 2))
+
+# Time in seconds to formatted string e.g. 3665 -> '1:1:5'
+def secToFormat(time):
+    hour = time / 3600
+    min = s = time % 3600 / 60
+    sec = time % 3600 % 60
+    return '%d:%d:%d' % (hour, min, sec)
 
 
 # Getting localized name of the time unit
@@ -79,6 +90,7 @@ class TimerProcessor(Processor):
         elif t.isAlive():
             passed = time.time() - started
             logging.info('Timer is run for %d sec, left %d sec' % (t.interval, t.interval - passed))
+            screen.ScreenWrapper.getInstance().write(secToFormat(t.interval - passed))
             Voice.getInstance().say('Осталось %s' % secToString(t.interval - passed))
         else:
             if canceled is None:
@@ -136,6 +148,7 @@ class StartTimerProcessor(TimerProcessor):
             canceled = None
             t.start()
             logging.info('Start timer for %s' % secToString(total))
+            screen.ScreenWrapper.getInstance().write(secToFormat(total))
             Voice.getInstance().say('Таймер на %s запущен' % secToString(total))
         else:
             logging.debug('NOTHING')

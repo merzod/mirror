@@ -2,6 +2,10 @@ import logging
 from collections import deque
 from analyser import Analyser
 from voice import Voice
+import sys
+sys.path.append('../hardware/')
+import screen
+
 
 # Command to process by the core
 class Command(object):
@@ -83,6 +87,8 @@ class Core():
             Voice.getInstance().sayCachedNotClear()
         if res == 0:
             logging.warn('Failed to find any suitable processor for: %s' % cmd)
+        screen.ScreenWrapper.getInstance().cleanup()
+
 
     def append(self, processor):
         self.processors.processors.append(processor)

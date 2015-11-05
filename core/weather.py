@@ -21,7 +21,6 @@ class WeatherProcessor(Processor):
         s = self.prepareString(tree, day)
         logging.info(s)
         Voice.getInstance().say(s)
-        screen.ScreenWrapper.getInstance().cleanup()
 
     def prepareString(self, tree, day):
         fr = tree.xpath('//span[@class="from"]/text()')
