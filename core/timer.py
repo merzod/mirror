@@ -90,7 +90,7 @@ class TimerProcessor(Processor):
         elif t.isAlive():
             passed = time.time() - started
             logging.info('Timer is run for %d sec, left %d sec' % (t.interval, t.interval - passed))
-            screen.ScreenWrapper.getInstance().write(secToFormat(t.interval - passed), size=30)
+            screen.ScreenWrapper.getInstance().write(secToFormat(t.interval - passed), size=25)
             Voice.getInstance().say('Осталось %s' % secToString(t.interval - passed))
         else:
             if canceled is None:
@@ -149,7 +149,7 @@ class StartTimerProcessor(TimerProcessor):
             canceled = None
             t.start()
             logging.info('Start timer for %s' % secToString(total))
-            screen.ScreenWrapper.getInstance().write(secToFormat(total), size=30)
+            screen.ScreenWrapper.getInstance().write(secToFormat(total), size=25)
             Voice.getInstance().say('Таймер на %s запущен' % secToString(total))
         else:
             logging.debug('NOTHING')
