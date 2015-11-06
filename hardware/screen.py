@@ -73,7 +73,6 @@ class ScreenWrapper(object):
         self.lock.release()
 
     def fill_walle_state(self, draw):
-        self.lock.acquire()
         draw.rectangle((0, 0, self.screen.width, self.screen.height), outline=0, fill=0)
 
         # title line
@@ -90,7 +89,6 @@ class ScreenWrapper(object):
             draw.line((90, x, 126, x), fill=255)
         draw.line((90, 29, 126, 29), fill=255)
         draw.line((90, 31, 126, 31), fill=255)
-        self.lock.release()
 
     def draw_file(self, name):
         self.lock.acquire()
@@ -100,11 +98,9 @@ class ScreenWrapper(object):
         self.lock.release()
 
     def play(self, frames):
-        self.lock.acquire()
         for frame in frames:
             self.draw_file(frame[0])
             time.sleep(frame[1])
-        self.lock.release()
 
     def write(self, text, x=0, y=0, size=8):
         self.lock.acquire()
