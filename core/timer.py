@@ -96,7 +96,6 @@ class TimerProcessor(Processor):
         elif timer.isAlive():
             passed = time.time() - started
             logging.info('Timer is run for %d sec, left %d sec' % (timer.interval, timer.interval - passed))
-            screen.ScreenWrapper.getInstance().write(secToFormat(timer.interval - passed), size=25)
             Voice.getInstance().say('Осталось %s' % secToString(timer.interval - passed))
         else:
             if canceled is None:
