@@ -24,6 +24,7 @@ def tick():
 # Callback for timer
 def action(processor):
     logging.info('Time!!!: %s' % processor)
+    screen.ScreenWrapper.getInstance().write('Timeout', size=30)
     Voice.getInstance().sayCachedTimeout()
 
 
