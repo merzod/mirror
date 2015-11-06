@@ -32,7 +32,7 @@ class ScreenWrapper(object):
 
     def __init__(self, screen):
         self.screen = screen
-        self.lock = threading.Lock
+        self.lock = threading.Lock()
 
     def __del__(self):
         del self.screen
