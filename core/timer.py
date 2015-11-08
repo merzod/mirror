@@ -6,6 +6,7 @@ import time
 from model import *
 from voice import Voice
 import sys
+
 sys.path.append('../hardware/')
 import screen
 
@@ -15,11 +16,15 @@ timer = None
 started = None
 canceled = None
 
+
+# Once call the function after timer start and it will show time on the screen each sec.
+# will auto stop when timeout
 def tick():
     if timer is not None and timer.isAlive():
         threading.Timer(SCREEN_UPDATE, tick).start()
         passed = time.time() - started
         screen.ScreenWrapper.getInstance().write(secToFormat(timer.interval - passed), size=25)
+
 
 # Callback for timer
 def action(processor):
@@ -49,6 +54,7 @@ def secToString(sec):
         return str
     else:
         return '%d %s' % (sec, getName(sec, 2))
+
 
 # Time in seconds to formatted string e.g. 3665 -> '1:1:5'
 def secToFormat(time):

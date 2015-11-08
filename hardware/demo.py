@@ -1,6 +1,7 @@
 import logging
 import time
 from base import Base
+import screen
 import sys
 sys.path.append('../core/')
 from voice import Voice
@@ -37,8 +38,8 @@ if __name__ == "__main__":
            ["../resources/anim1/sc2.png", 0.5],
            ["../resources/anim1/sc1.png", 0.1],
            ["../resources/anim1/sc0.png", 1]]
-    walle.face.play(frames)
-    walle.face.draw_walle_state()
+    screen.ScreenWrapper.getInstance().play(frames)
+    screen.ScreenWrapper.getInstance().draw_walle_state()
 
     # turn left
     walle.head.move(0)
